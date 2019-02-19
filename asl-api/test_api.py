@@ -37,7 +37,7 @@ def test_start_daemon_api_thread(local):
 
 
 def test_thread(url):
-    maxTry = 200
+    maxTry = 300
     currentTry = 0
     while currentTry < maxTry:
         currentTry += 1
