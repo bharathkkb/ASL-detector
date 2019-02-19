@@ -13,9 +13,7 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-
-                python server.py -t &
-                pytest -q test_api.py --url=http://0.0.0.0:5000
+                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s
 
                 """
 
