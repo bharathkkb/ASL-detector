@@ -48,7 +48,11 @@ def test_thread(url):
                 break
         except ConnectionError as ex:
             pass
-
+"""
+**************************************
+Swagger Infra Tests
+**************************************
+"""
 def validateSwagger(url):
     testAPIBasePath = "{}/test/api".format(url)
     validate_spec_url(testAPIBasePath + '/swagger.json')
