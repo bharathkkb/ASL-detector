@@ -90,7 +90,7 @@ def test_hello_schema(url):
 def test_hello_data(url):
     testAPIBasePath = "{}/test/api".format(url)
     response = requests.get(testAPIBasePath + '/hello')
-    data = json.loads(response.content)
+    data = response.json()
     print(data)
     assert data["hello"] == "hello"
 
