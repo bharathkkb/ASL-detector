@@ -1,0 +1,43 @@
+swagger: "2.0"
+info:
+  description: Lorem Ipsom
+  version: "1.0.0"
+  title: ASL Detection REST API
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "{{is_testing}}/api"
+
+
+paths:
+  /hello:
+    get:
+      summary: returns hello
+      operationId: helloClass.testHello
+      tags:
+        - "helloClass"
+      description: |
+        Returns a simple hello
+      produces:
+      - application/json
+      responses:
+        200:
+          description: hello obj
+          schema:
+            type: object
+            items:
+              type: object
+              $ref: '#/definitions/hello'
+        400:
+          description: bad input parameter
+
+definitions:
+
+  hello:
+    type: object
+    properties:
+      hello:
+        type: string
+        example: hello-string
