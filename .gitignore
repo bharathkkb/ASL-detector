@@ -116,3 +116,9 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Node Modules
+node_modules
+
+# Built frontend
+/public
