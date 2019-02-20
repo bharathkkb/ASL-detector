@@ -1,0 +1,38 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb", "prettier", "prettier/flowtype", "prettier/react"],
+  "plugins": ["flowtype", "import", "jsx-a11y", "promise", "react"],
+  "rules": {
+    "comma-dangle": 0,
+    "import/dynamic-import-chunkname": "error",
+    "import/no-commonjs": "error",
+    "import/no-extraneous-dependencies": 0,
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "no-console": 0,
+    "no-magic-numbers": 0,
+    "no-unused-vars": "warn",
+    "quotes": [
+      "error",
+      "single",
+      {"avoidEscape": true, "allowTemplateLiterals": true}
+    ],
+    "react/jsx-filename-extension": [
+      "error",
+      {"extensions": [".jsx", ".spec.js"]}
+    ],
+    "react/sort-comp": [
+      "error",
+      {
+        "order": [
+          "type-annotations",
+          "state",
+          "static-methods",
+          "constructor",
+          "lifecycle",
+          "everything-else",
+          "render"
+        ]
+      }
+    ]
+  }
+}
