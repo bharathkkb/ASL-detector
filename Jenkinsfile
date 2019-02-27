@@ -25,7 +25,9 @@ pipeline {
                 echo 'Building in a container'
                 sh "ls"
                 sh """
-                docker -v
+                docker -v && docker-compose -v
+                docker-compose -f compose-dev.yml up --d
+                sleep 5
                 docker build -t asl-api -f Dockerfile-api-dev .
                 docker run -d --network="web_dev" -p 5000:5000 asl-api:latest
                 sleep 10
