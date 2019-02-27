@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build and test backend locally') {
             steps {
-                echo 'Building'
+                echo 'Building locally'
+                sh "ls"
                 sh """
                 export BUILD_ID=dontKillMe
                 python3 --version
@@ -19,9 +20,19 @@ pipeline {
 
             }
         }
-        stage('Test') {
+        stage('Build and test backend in container') {
             steps {
-                echo 'Testing'
+                echo 'Building in a container'
+                sh "ls"
+                sh """
+                docker -v && docker-compose -v
+                docker network create -d bridge web_dev
+                sleep 5
+                docker build -t asl-api -f Dockerfile-api-dev .
+                docker run -d --network="web_dev" -p 5000:5000 asl-api:latest
+                sleep 10
+                docker ps -a
+                """
             }
         }
         stage('Deploy') {
@@ -32,7 +43,20 @@ pipeline {
     }
     post {
         always {
-            echo 'This will always run'
+            echo 'Clean up'
+            sh """
+            result=\$( docker ps -a -q )
+            if [ -n "\$result" ]; then
+              docker stop \$(docker ps -a -q)
+               docker rm \$(docker ps -a -q)
+            else
+              echo "No containers left"
+            fi
+           """
+           sh """
+           docker volume prune -f
+           docker network rm web_dev
+         """
         }
         success {
             echo 'This will run only if successful'
