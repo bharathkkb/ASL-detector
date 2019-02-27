@@ -26,7 +26,7 @@ pipeline {
                 sh "ls"
                 sh """
                 docker -v && docker-compose -v
-                docker-compose -f compose-dev.yml up --d
+                docker network create -d bridge web_dev
                 sleep 5
                 docker build -t asl-api -f Dockerfile-api-dev .
                 docker run -d --network="web_dev" -p 5000:5000 asl-api:latest
