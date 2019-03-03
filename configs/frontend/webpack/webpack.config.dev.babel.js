@@ -18,21 +18,6 @@ export default merge.smartStrategy({
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-              babelrc: true,
-              envName: 'development',
-            },
-          },
-        ],
-      },
-
-      {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           {

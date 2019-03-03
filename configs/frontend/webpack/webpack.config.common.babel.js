@@ -29,6 +29,21 @@ export default {
   module: {
     rules: [
       {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: false,
+              options: {
+                presets: [require('./babel-preset-local')],
+              },
+            },
+          },
+        ],
+      },
+      {
         test: /\.css$/,
         use: [
           { loader: 'style-loader', options: { sourceMap: true } },
