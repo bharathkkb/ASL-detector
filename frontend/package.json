@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "scripts": {
     "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
-    "start": "react-scripts start",
-    "test": "react-scripts test"
+    "start": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts start",
+    "test": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts test"
   },
   "devDependencies": {
     "react": "^16.8.3",
