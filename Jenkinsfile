@@ -68,6 +68,7 @@ pipeline {
            sh """
            docker volume prune -f
            docker network rm web_dev
+           docker system prune
          """
         }
         success {
