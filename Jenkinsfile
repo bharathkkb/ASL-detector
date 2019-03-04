@@ -41,7 +41,7 @@ pipeline {
                 sh "ls"
                 sh """
                 docker build  -t asl-ui -f Dockerfile-ui-dev .
-                docker run -d --network="web_dev" -p 5001:80 asl-api:latest
+                docker run -d --network="web_dev" -p 5001:80 asl-ui:latest
                 sleep 10
                 docker ps -a
                 """
