@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {label 'master'}
 
     stages {
         stage('Build and test backend locally') {
