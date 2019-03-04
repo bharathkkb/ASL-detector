@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Build and test backend in container') {
             steps {
-                echo 'Building in a container'
+                echo 'Building backend in a container'
                 sh "ls"
                 sh """
                 docker -v && docker-compose -v
@@ -30,6 +30,18 @@ pipeline {
                 sleep 5
                 docker build -t asl-api -f Dockerfile-api-dev .
                 docker run -d --network="web_dev" -p 5000:5000 asl-api:latest
+                sleep 10
+                docker ps -a
+                """
+            }
+        }
+        stage('Build and test front end in container') {
+            steps {
+                echo 'Building front end in a container'
+                sh "ls"
+                sh """
+                dock build  -t asl-ui -f Dockerfile-ui-dev .
+                docker run -d --network="web_dev" -p 5001:80 asl-api:latest
                 sleep 10
                 docker ps -a
                 """
