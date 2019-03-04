@@ -40,7 +40,7 @@ pipeline {
                 echo 'Building front end in a container'
                 sh "ls"
                 sh """
-                dock build  -t asl-ui -f Dockerfile-ui-dev .
+                docker build  -t asl-ui -f Dockerfile-ui-dev .
                 docker run -d --network="web_dev" -p 5001:80 asl-api:latest
                 sleep 10
                 docker ps -a
