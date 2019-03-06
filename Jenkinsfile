@@ -14,7 +14,7 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s
+                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=feature-html-report/index.html
 
                 """
 
