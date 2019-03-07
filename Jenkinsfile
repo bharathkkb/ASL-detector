@@ -14,8 +14,7 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=feature-html-report/index.html
-
+                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
                 """
 
             }
@@ -70,6 +69,19 @@ pipeline {
            docker network rm web_dev
            docker system prune -f
          """
+         echo 'Archive artifacts and test results'
+         archive "asl-api/test-results/*"
+
+        junit 'asl-api/test-results/junit/*.xml'
+        publishHTML target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'asl-api/test-results/feature-html-report/',
+            reportFiles: 'index.html',
+            reportName: 'API BB FeatureTest Coverage Report'
+          ]
+
         }
         success {
             echo 'This will run only if successful'
