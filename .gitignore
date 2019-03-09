@@ -29,6 +29,9 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+/.vscode
+/asl-alphabet
+
 MANIFEST
 
 # PyInstaller
