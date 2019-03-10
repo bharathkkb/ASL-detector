@@ -15,9 +15,9 @@ from keras import optimizers
 from keras.preprocessing.image import ImageDataGenerator
 from keras_preprocessing.image import img_to_array, load_img
 from sklearn.model_selection import train_test_split
-
-train_dir = '../asl-alphabet/asl_alphabet_test'
-test_dir = '../asl-alphabet/asl_alphabet_train'
+from sklearn import preprocessing
+train_dir = '/asl-data/asl_alphabet_test'
+test_dir = '/asl-data/asl_alphabet_train'
 
 test_images = []
 
@@ -28,7 +28,9 @@ for image_dir in glob.iglob(test_dir + '/**/*.jpg', recursive=True):
 random.shuffle(test_images) #Randomizes Array
 
 image_data, image_labels = label_images.process_and_label(test_images)
-
+le = preprocessing.LabelEncoder()
+image_labels=le.fit_transform(image_labels)
+print(image_labels)
 #For memory optimization
 del test_images
 gc.collect()
@@ -38,7 +40,7 @@ image_data = np.array(image_data)
 image_labels = np.array(image_labels)
 
 #80% training data, 20% validation data
-data_train, data_val, label_train, label_val = train_test_split(image_data, image_labels, test_size=0.20, random_state=2)
+data_train, data_val, label_train, label_val = train_test_split(image_data, image_labels,train_size=0.20, test_size=0.10, random_state=2)
 print("Shape of train images is:", data_train.shape)
 print("Shape of validiation images is:", data_val.shape)
 print("Shape of labels is:", label_train.shape)
