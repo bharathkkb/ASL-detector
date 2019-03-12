@@ -1,11 +1,10 @@
 #build react
-FROM node:10 as react-build
+FROM node:10-alpine as react-build
 WORKDIR .
 COPY . ./
-RUN yarn install
-RUN yarn build
-#web server
-FROM nginx:alpine
-COPY --from=react-build /frontend/build /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+RUN yarn install && yarn build
+#not needed for smoke tests hence disable
+#FROM nginx:alpine
+#COPY --from=react-build /frontend/build /usr/share/nginx/html
+#EXPOSE 80
+#CMD ["nginx", "-g", "daemon off;"]
