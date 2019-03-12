@@ -1,7 +1,7 @@
 #build react
 FROM node:10-alpine as react-build
 WORKDIR .
-COPY frontend ./
+COPY . ./
 RUN yarn install && yarn build
 #not needed for smoke tests hence disable
 #FROM nginx:alpine
