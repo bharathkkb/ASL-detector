@@ -8,7 +8,7 @@ wb-unittests/test-reports/*
 feature-html-report/*
 **/test-reports/*
 **/feature-html-report/*
-
+data/*
 # C extensions
 *.so
 
