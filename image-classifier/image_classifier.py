@@ -28,37 +28,6 @@ test_dir = '/asl-data/asl_alphabet_test'
 
 test_images = []
 img_h_w = 200
-# # Load Images from directory and store them in an array of test_images
-# for image_dir in glob.iglob(test_dir + '/**/*.jpg', recursive=True):
-#     test_images.append(image_dir)
-#
-# random.shuffle(test_images)  # Randomizes Array
-#
-# image_data, image_labels = label_images.process_and_label(test_images, img_h_w)
-# le = preprocessing.LabelEncoder()
-# image_labels = le.fit_transform(image_labels)
-# print(image_labels)
-# # For memory optimization
-# del test_images
-# gc.collect()
-#
-# # Convert image_data, image_labels to numpy arrays
-# image_data = np.array(image_data)
-# image_labels = np.array(image_labels)
-#
-# # 80% training data, 20% validation data
-# data_train, data_val, label_train, label_val = train_test_split(
-#     image_data, image_labels, train_size=0.8, test_size=0.2, random_state=2)
-# print("Shape of train images is:", data_train.shape)
-# print("Shape of validiation images is:", data_val.shape)
-# print("Shape of labels is:", label_train.shape)
-# print("Shape of label val is:", label_val.shape)
-#
-# # Clear memory
-# del image_data
-# del image_labels
-# gc.collect()
-#
 ntrain = 78301
 nval = 8700
 
@@ -98,15 +67,6 @@ datagen = ImageDataGenerator(rescale=1. / 255,  # Scale the image between 0 and 
                              zoom_range=0.2,
                              validation_split=0.1,
                              horizontal_flip=True,)
-
-# val_datagen = ImageDataGenerator(
-#     rescale=1. / 255)  # We only rescale data
-
-
-# Create the image generators
-# train_generator = train_datagen.flow(
-#     data_train, label_train, batch_size=batch_size)
-# val_generator = val_datagen.flow(data_val, label_val, batch_size=batch_size)
 
 
 train_generator = datagen.flow_from_directory(
