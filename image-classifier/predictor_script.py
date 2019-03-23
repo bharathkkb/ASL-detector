@@ -1,15 +1,24 @@
 from keras.models import load_model
 from keras import optimizers
+from keras.preprocessing import image
 import cv2
 import numpy as np
-model = load_model('model_keras.h5')
-model.load_weights('model_weights.h5')
-model.compile(loss='categorical_crossentropy',
-              optimizer=optimizers.RMSprop(lr=1e-4), metrics=['acc'])
+import traceback
 
-img = cv2.imread('Y_test.jpg')
-img = cv2.resize(img, (200, 200))
-img = np.reshape(img, [1, 200, 200, 3])
-classes = model.predict_classes(img)
 
-print(classes)
+class Predictor:
+    def __init__(self):
+        self.model = load_model('model_keras.h5')
+        self.model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(
+            lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False), metrics=['acc'])
+
+    def predict(self, path):
+        try:
+            img = cv2.imread(path)
+            img = cv2.resize(img, (200, 200))
+            img = np.reshape(img, [1, 200, 200, 3])
+            classes = model.predict_classes(img)
+        except Exception as ex:
+            print(ex)
+            print(traceback.print_exc())
+            return False

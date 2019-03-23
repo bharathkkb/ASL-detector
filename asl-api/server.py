@@ -3,6 +3,7 @@ from flask import render_template
 import connexion
 from flask_cors import CORS
 import argparse
+from google.cloud import storage
 global dbType
 app = Flask(__name__)
 
@@ -14,6 +15,19 @@ def parseArgs():
     parser.add_argument("-t", action="store_true",
                         help="Launch API and run tests")
     return parser.parse_args()
+
+# TODO download blob is slow due to chunking, fix later. use gsutil now
+# def download_blob(bucket_name, source_blob_name, destination_file_name):
+#     """Downloads a blob from the bucket."""
+#     storage_client = storage.Client()
+#     bucket = storage_client.get_bucket(bucket_name)
+#     blob = bucket.blob(source_blob_name)
+#
+#     blob.download_to_filename(destination_file_name)
+#
+#     print('Blob {} downloaded to {}.'.format(
+#         source_blob_name,
+#         destination_file_name))
 
 
 def createAppThread():
@@ -44,6 +58,7 @@ def createApp(args):
 
 
 if __name__ == '__main__':
+    # download_blob("asl-models", "model_keras.h5", "model_keras.h5")
     args = parseArgs()
     app = createApp(args)
     app.run(host='0.0.0.0', port=args.p, debug=True)
