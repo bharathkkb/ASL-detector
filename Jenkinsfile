@@ -4,14 +4,16 @@ pipeline {
     stages {
         stage('Build and test backend locally') {
             steps {
+              echo 'Downloading Model'
+                script {
+                googleStorageDownload bucketUri: 'gs://asl-models/model_keras.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
+                }
                 echo 'Building locally'
                 sh "ls"
                 sh """
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
-                googleStorageDownload bucketUri: gs://asl-models/model_keras.h5 credentialsId:gc-storage  localDirectory: .
-                gsutil cp gs://asl-models/model_keras.h5 .
                 python3 -m virtualenv env
                 ls
                 . env/bin/activate
