@@ -10,6 +10,8 @@ pipeline {
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
+                googleStorageDownload bucketUri: gs://asl-models/model_keras.h5 credentialsId:gc-storage  localDirectory: .
+                gsutil cp gs://asl-models/model_keras.h5 .
                 python3 -m virtualenv env
                 ls
                 . env/bin/activate
