@@ -38,6 +38,26 @@ paths:
               $ref: '#/definitions/prediction'
         400:
           description: bad input parameter
+  /hello:
+    get:
+      summary: returns hello
+      operationId: helloClass.testHello
+      tags:
+        - "helloClass"
+      description: |
+        Returns a simple hello
+      produces:
+      - application/json
+      responses:
+        200:
+          description: hello obj
+          schema:
+            type: object
+            items:
+              type: object
+              $ref: '#/definitions/hello'
+        400:
+          description: bad input parameter
 definitions:
   prediction:
     type: object
@@ -45,3 +65,9 @@ definitions:
       prediction:
         type: string
         example: A
+  hello:
+    type: object
+    properties:
+      hello:
+        type: string
+        example: hello-string
