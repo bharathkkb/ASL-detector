@@ -8,7 +8,7 @@ import traceback
 
 class Predictor:
     def __init__(self):
-        self.model = load_model('model_keras_old.h5')
+        self.model = load_model('model_keras.h5')
         self.model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(
             lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False), metrics=['acc'])
 
