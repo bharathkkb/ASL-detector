@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: Lorem Ipsom
+  description: ASL Detection REST API
   version: "1.0.0"
   title: ASL Detection REST API
 consumes:
@@ -9,9 +9,35 @@ produces:
   - "application/json"
 
 basePath: "{{is_testing}}/api"
-
-
 paths:
+  /predict:
+    post:
+      summary: returns prediction given an image
+      operationId: apiHandler.predict_image
+      tags:
+        - "prediction"
+      description: |
+        Returns an alphabet
+      consumes:
+         - multipart/form-data
+      parameters:
+         - name: file_to_upload
+           in: formData
+           description: The image to be uploaded
+           type: file
+           required: true
+      produces:
+      - application/json
+      responses:
+        200:
+          description: prediction obj
+          schema:
+            type: object
+            items:
+              type: object
+              $ref: '#/definitions/prediction'
+        400:
+          description: bad input parameter
   /hello:
     get:
       summary: returns hello
@@ -32,9 +58,13 @@ paths:
               $ref: '#/definitions/hello'
         400:
           description: bad input parameter
-
 definitions:
-
+  prediction:
+    type: object
+    properties:
+      prediction:
+        type: string
+        example: A
   hello:
     type: object
     properties:

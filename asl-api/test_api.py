@@ -16,6 +16,8 @@ from requests.exceptions import ConnectionError
 Setup
 **************************************
 """
+
+
 def appThread():
     app = createAppThread()
     app.run(host='0.0.0.0', port=5000, debug=False)
@@ -37,22 +39,26 @@ def test_start_daemon_api_thread(local):
 
 
 def test_thread(url):
-    maxTry = 300
+    maxTry = 10000
     currentTry = 0
     while currentTry < maxTry:
         currentTry += 1
         try:
             testAPIBasePath = "{}/test/api".format(url)
-            response = requests.get(testAPIBasePath + '/hello', timeout=300)
+            response = requests.get(testAPIBasePath + '/hello', timeout=10000)
             if(response.status_code == 200):
                 break
         except ConnectionError as ex:
             pass
+
+
 """
 **************************************
 Swagger Infra Tests
 **************************************
 """
+
+
 def validateSwagger(url):
     testAPIBasePath = "{}/test/api".format(url)
     validate_spec_url(testAPIBasePath + '/swagger.json')
@@ -97,6 +103,15 @@ def test_hello_data(url):
     data = response.json()
     print(data)
     assert data["hello"] == "hello"
+
+
+def test_pred_A(url):
+    testAPIBasePath = "{}/test/api/predict".format(url)
+    files = {'file_to_upload': open('A_test.jpg', 'rb')}
+    response = requests.post(testAPIBasePath, files=files)
+    data = response.json()
+    print(data)
+    assert data["prediction"] == [0]
 
 # # this is for debugging individual tests
 # # if __name__ == "__main__":
