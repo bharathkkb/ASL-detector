@@ -6,9 +6,10 @@
     "build": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts build",
     "start": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "test": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts test",
-    "test-coverage": "yarn test --coverage --reporters=default --reporters=jest-junit"
+    "test-coverage": "yarn test --ci --coverage --reporters=default --reporters=jest-junit --reporters=jest-html-reporter"
   },
   "devDependencies": {
+    "jest-html-reporter": "^2.5.0",
     "jest-junit": "^6.3.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
