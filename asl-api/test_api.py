@@ -39,13 +39,13 @@ def test_start_daemon_api_thread(local):
 
 
 def test_thread(url):
-    maxTry = 600
+    maxTry = 10000
     currentTry = 0
     while currentTry < maxTry:
         currentTry += 1
         try:
             testAPIBasePath = "{}/test/api".format(url)
-            response = requests.get(testAPIBasePath + '/hello', timeout=600)
+            response = requests.get(testAPIBasePath + '/hello', timeout=10000)
             if(response.status_code == 200):
                 break
         except ConnectionError as ex:
