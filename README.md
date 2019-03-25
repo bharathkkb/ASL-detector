@@ -11,6 +11,11 @@ docker
 docker-compose
 ```
 
+#### Running the backend API server
+
+Incase you do not have the model, you can run getModel.sh to download the model.
+This will download the model to /asl-api
+
 ## Installing
 
 #### Running the backend API server
