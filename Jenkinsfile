@@ -23,56 +23,12 @@ pipeline {
 
             }
         }
-        stage('Build and test backend in container') {
-            steps {
-                echo 'Building backend in a container'
-                sh "ls"
-                sh """
-                docker -v && docker-compose -v
-                docker network create -d bridge web_dev
-                sleep 5
-                docker build -t asl-api -f Dockerfile-api-dev .
-                docker run -d --network="web_dev" -p 5000:5000 asl-api:latest
-                sleep 10
-                docker ps -a
-                """
-            }
-        }
-        stage('Build and test front end in container') {
-            steps {
-                echo 'Building front end in a container'
-                sh "ls"
-                sh """
-                docker build  -t asl-ui -f Dockerfile-ui-dev .
-                docker run -d --network="web_dev" -p 5001:80 asl-ui:latest
-                sleep 10
-                docker ps -a
-                """
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying'
-            }
-        }
+
+
     }
     post {
         always {
-            echo 'Clean up'
-            sh """
-            result=\$( docker ps -a -q )
-            if [ -n "\$result" ]; then
-              docker stop \$(docker ps -a -q)
-               docker rm \$(docker ps -a -q)
-            else
-              echo "No containers left"
-            fi
-           """
-           sh """
-           docker volume prune -f
-           docker network rm web_dev
-           docker system prune -f
-         """
+
          echo 'Archive artifacts and test results'
          archive "asl-api/test-results/*"
 
@@ -88,8 +44,35 @@ pipeline {
 
         }
         success {
-            echo 'This will run only if successful'
+            script {
+            echo 'This build was successful.'
+            if(GIT_BRANCH == 'master'){
+            if(GIT_PREVIOUS_SUCCESSFUL_COMMIT == GIT_PREVIOUS_COMMIT){
+            echo 'Promoting to staging'
+            withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh"""
+            rm -rf git-push-stg
+            mkdir git-push-stg
+            cd git-push-stg
+            git config --global user.email \"bharath.baiju@sjsu.edu\"
+            git config --global user.name \"jenkins-bot\"
+            git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/bharathkkb/ASL-detector.git
+            cd ASL-detector
+            git checkout stg
+            git branch
+            git pull --commit --rebase origin master
+
+            git push origin stg
+
+            """
+            }
+            }
+            else{
+                echo 'Not eligible for promoting to staging'
+            }
+          }
         }
+    }
         failure {
             echo 'This will run only if failed'
         }
