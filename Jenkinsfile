@@ -28,21 +28,7 @@ pipeline {
     }
     post {
         always {
-            echo 'Clean up'
-            sh """
-            result=\$( docker ps -a -q )
-            if [ -n "\$result" ]; then
-              docker stop \$(docker ps -a -q)
-               docker rm \$(docker ps -a -q)
-            else
-              echo "No containers left"
-            fi
-           """
-           sh """
-           docker volume prune -f
-           docker network rm web_dev
-           docker system prune -f
-         """
+
          echo 'Archive artifacts and test results'
          archive "asl-api/test-results/*"
 
@@ -63,7 +49,7 @@ pipeline {
             if(GIT_BRANCH == 'master'){
             if(GIT_PREVIOUS_SUCCESSFUL_COMMIT == GIT_PREVIOUS_COMMIT){
             echo 'Promoting to staging'
-            withCredentials([usernamePassword(credentialsId: 'github-cred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh"""
             rm -rf git-push-stg
             mkdir git-push-stg

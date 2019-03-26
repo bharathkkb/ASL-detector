@@ -58,18 +58,7 @@ pipeline {
            docker network rm web_dev
            docker system prune -f
          """
-         echo 'Archive artifacts and test results'
-         archive "asl-api/test-results/*"
 
-        junit 'asl-api/test-results/junit/*.xml'
-        publishHTML target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: 'asl-api/test-results/feature-html-report/',
-            reportFiles: 'index.html',
-            reportName: 'API BB FeatureTest Coverage Report'
-          ]
 
         }
         success {
