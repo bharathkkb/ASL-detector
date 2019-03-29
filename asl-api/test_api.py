@@ -111,7 +111,7 @@ def test_pred_A(url):
     response = requests.post(testAPIBasePath, files=files)
     data = response.json()
     print(data)
-    assert data["prediction"] == [0]
+    assert data["prediction"]["predictions"][0][0] == 1
 
 # # this is for debugging individual tests
 # # if __name__ == "__main__":
