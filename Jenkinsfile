@@ -44,7 +44,8 @@ pipeline {
             sh "ls"
             sh """
             yarn install
-            yarn test
+            yarn test-coverage
+
             """
 
           }
