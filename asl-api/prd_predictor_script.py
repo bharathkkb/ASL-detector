@@ -1,28 +1,29 @@
-from keras.models import load_model
-from keras import optimizers
-from keras.preprocessing import image
-import cv2
+import argparse
+import json
 import numpy as np
+import requests
 import traceback
+import cv2
+from keras.preprocessing import image
 
 
 class Predictor:
     def __init__(self):
-        self.model = load_model('model_keras.h5')
-        self.model.compile(loss='categorical_crossentropy', optimizer=optimizers.Adam(
-            lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False), metrics=['acc'])
+        self.tf_serving_base = "http://localhost:8501"
+        self.tf_serving_version = "v1"
+        self.tf_serving_model_name = "asl_classifier_model"
 
     def predict(self, file):
         try:
-            filestr = file.read()
-            npimg = np.fromstring(filestr, np.uint8)
-            img = cv2.imdecode(npimg, cv2.IMREAD_COLOR)
-            # print(path)
-            # img = cv2.imread(path)
-            img = cv2.resize(img, (200, 200))
-            img = np.reshape(img, [1, 200, 200, 3])
-            classes = self.model.predict_classes(img)
-            return classes.tolist()
+            img = image.img_to_array(image.load_img(
+                file, target_size=(200, 200)))
+            payload = {
+                "instances": [img.tolist()]
+            }
+            r = requests.post("{}/{}/models/{}:predict".format(self.tf_serving_base,
+                                                               self.tf_serving_version, self.tf_serving_model_name), json=payload)
+            pred = json.loads(r.content.decode('utf-8'))
+            return pred
         except Exception as ex:
             print(ex)
             print(traceback.print_exc())

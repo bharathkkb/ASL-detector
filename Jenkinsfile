@@ -8,16 +8,31 @@ pipeline {
                 script {
                 googleStorageDownload bucketUri: 'gs://asl-models/model_keras.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
                 }
+                echo 'Building tf serving'
+                sh "ls"
+                sh """
+                cd asl-api
+                python3 -m virtualenv env
+                ls
+                . env/bin/activate
+                pip install -r requirements.txt
+                cd ..
+                cd image-classifier
+                python convert_to_tf_serving.py
+                cd ..
+                docker-compose -f compose-tf-serving.yml up --d --build
+                """
+
                 echo 'Building locally'
                 sh "ls"
                 sh """
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
-                python3 -m virtualenv env
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
+                
                 pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
                 """
 
@@ -28,6 +43,9 @@ pipeline {
     }
     post {
         always {
+          sh """
+          docker-compose -f compose-tf-serving.yml down
+          """
 
          echo 'Archive artifacts and test results'
          archive "asl-api/test-results/*"
