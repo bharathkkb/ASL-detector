@@ -58,8 +58,10 @@ pipeline {
 
          echo 'Archive artifacts and test results'
          archive "asl-api/test-results/*"
+         archive "frontend/junit.xml"
 
         junit 'asl-api/test-results/junit/*.xml'
+        junit 'frontend/junit.xml'
         publishHTML target: [
             allowMissing: false,
             alwaysLinkToLastBuild: false,
@@ -68,6 +70,22 @@ pipeline {
             reportFiles: 'index.html',
             reportName: 'API BB FeatureTest Coverage Report'
           ]
+          publishHTML target: [
+              allowMissing: false,
+              alwaysLinkToLastBuild: false,
+              keepAll: true,
+              reportDir: 'frontend/jest-stare/',
+              reportFiles: 'index.html',
+              reportName: 'Front end Unit Test Report'
+            ]
+            publishHTML target: [
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: 'frontend/coverage/lcov-report/',
+                reportFiles: 'index.html',
+                reportName: 'Front end Coverage Report'
+              ]
 
         }
         success {
