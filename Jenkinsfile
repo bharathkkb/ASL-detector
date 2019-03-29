@@ -32,12 +32,21 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-                
+
                 pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
                 """
 
             }
         }
+          stage('Build and test frontend locally') {
+            echo 'Building tf serving'
+            sh "ls"
+            sh """
+            yarn install
+            yarn test
+            """
+
+          }
 
 
     }
