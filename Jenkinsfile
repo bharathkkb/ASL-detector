@@ -39,6 +39,7 @@ pipeline {
             }
         }
           stage('Build and test frontend locally') {
+            steps {
             echo 'Building tf serving'
             sh "ls"
             sh """
@@ -47,6 +48,7 @@ pipeline {
             """
 
           }
+        }
 
 
     }
