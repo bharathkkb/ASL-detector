@@ -8,8 +8,10 @@
     "build": "yarn workspace frontend run build",
     "lint": "eslint . --ext js,jsx,md",
     "lint-fix": "yarn run lint --fix",
+    "postlint-fix": "prettier --ignore-path .eslintignore --write \"**/*.{js,jsx,json,css,md}\"",
     "start": "yarn workspace frontend start",
-    "test": "yarn workspace frontend test"
+    "test": "yarn workspace frontend test",
+    "test-coverage": "yarn workspace frontend test-coverage"
   },
   "devDependencies": {
     "@vikr01/eslint-config": "^0.0.0-rc.2",
