@@ -24,9 +24,7 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-                cd ..
-                cd image-classifier
-                python
+                
                 pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
                 """
 
