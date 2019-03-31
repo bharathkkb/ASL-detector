@@ -8,11 +8,16 @@ from PIL import Image
 import io
 from keras.preprocessing import image
 from mongoHelpers import *
-
+import os
 
 class Predictor:
     def __init__(self):
-        self.tf_serving_base = "http://localhost:8501"
+        SECRET_KEY = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
+        if SECRET_KEY:
+            self.tf_serving_base = "http://asl-tf-serving:8501"
+        else:
+            self.tf_serving_base = "http://localhost:8501"
+
         self.tf_serving_version = "v1"
         self.tf_serving_model_name = "asl_classifier_model"
 
