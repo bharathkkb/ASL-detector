@@ -71,6 +71,11 @@ def test_case_connection(url):
     response = requests.get(testAPIBasePath + '/hello')
     assert response.status_code == 200
 
+def test_case_mongo_connection(url):
+
+    response = requests.get("http://localhost:27017/")
+    assert response.status_code == 200
+
 # pytest for validating swagger schema
 
 
