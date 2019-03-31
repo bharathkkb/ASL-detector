@@ -76,6 +76,11 @@ def test_case_mongo_connection(url):
     response = requests.get("http://localhost:27017/")
     assert response.status_code == 200
 
+def test_case_tf_serving_connection(url):
+
+    response = requests.get("http://localhost:8501/v1/models/asl_classifier_model")
+    assert response.status_code == 200
+
 # pytest for validating swagger schema
 
 
@@ -115,8 +120,25 @@ def test_pred_A(url):
     files = {'file_to_upload': open('A_test.jpg', 'rb')}
     response = requests.post(testAPIBasePath, files=files)
     data = response.json()
-    print(data)
+    pytest.shared = data["id"]
+    assert response.status_code == 200
+
+def test_job_A(url):
+    testAPIBasePath = "{}/test/api/predict".format(url)
+    files = {'file_to_upload': open('A_test.jpg', 'rb')}
+    response = requests.post(testAPIBasePath, files=files)
+    payload = response.json()
+    time.sleep(2)
+    testAPIBasePath = "{}/test/api/job".format(url)
+    response = requests.post(testAPIBasePath, data={'id':payload['id'] })
+    data = response.json()
+    assert response.status_code == 200
+    assert data["_id"] == payload['id']
+    assert data["result"] == "complete"
     assert data["prediction"]["predictions"][0][0] == 1
+
+
+
 
 # # this is for debugging individual tests
 # # if __name__ == "__main__":
