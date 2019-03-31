@@ -4,8 +4,10 @@ import numpy as np
 import requests
 import traceback
 import cv2
+from PIL import Image
+import io
 from keras.preprocessing import image
-
+from mongoDriver import mongoDriver
 
 class Predictor:
     def __init__(self):
@@ -13,10 +15,13 @@ class Predictor:
         self.tf_serving_version = "v1"
         self.tf_serving_model_name = "asl_classifier_model"
 
-    def predict(self, file):
+    def predict(self, img_id):
         try:
-            img = image.img_to_array(image.load_img(
-                file, target_size=(200, 200)))
+            query = dict()
+            query["_id"] = img_id
+            returnData= mongoDriver().getFindOne("asl-db", "testimg", query)
+            image_to_pred = Image.open(io.BytesIO(returnData["img_for_pred"]))
+            img = image.img_to_array(image_to_pred)
             payload = {
                 "instances": [img.tolist()]
             }
