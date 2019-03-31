@@ -29,7 +29,7 @@ pipeline {
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
-                docker-compose -f MaaS-docker-compose.yml up -d
+                docker-compose -f MaaS-jenkins.yml up --d
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
@@ -59,7 +59,7 @@ pipeline {
           sh """
           docker-compose -f compose-tf-serving.yml down
           cd asl-api
-          docker-compose -f MaaS-docker-compose.yml down
+          docker-compose -f MaaS-jenkins.yml down
           """
 
          echo 'Archive artifacts and test results'

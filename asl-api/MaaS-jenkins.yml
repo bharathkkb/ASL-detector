@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: 'mongodb'
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles # --quiet
+networks:
+  default:
+    name: web_dev
