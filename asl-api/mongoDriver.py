@@ -4,7 +4,7 @@ from pymongo.errors import ConnectionFailure
 from bson import json_util, ObjectId
 import os
 import gridfs
-
+import traceback
 class mongoDriver():
     def connectToMongo(self):
         """ Connect to MongoDB """
@@ -69,7 +69,7 @@ class mongoDriver():
                 "Could not write one to MongoDB: {}".format(str(e)))
             sys.exit(1)
 
-    def updateDict(self, dbName, collectionName, oldObj, newObj):
+    def updateDict(self, dbName, collectionName, newObj):
         """ Run a query to update data into Mongo DB """
         conn = self.connectToMongo()
         try:
@@ -77,9 +77,11 @@ class mongoDriver():
             collection = db[collectionName]
             for key, val in newObj.items():
                 try:
-                    collection.update_one({'_id': ObjectId(oldObj['_id']['$oid'])}, {
+                    collection.update_one({'_id': ObjectId(newObj['_id'])}, {
                                           '$set': {key: val}}, upsert=False)
                 except Exception as ex:
+                    print(ex)
+                    print(traceback.print_exc())
                     sys.stderr.write(
                         "Error while updating: {}".format(str(ex)))
             return True

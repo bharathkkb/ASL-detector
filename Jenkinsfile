@@ -29,6 +29,7 @@ pipeline {
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
+                docker-compose -f MaaS-docker-compose.yml up -d
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
