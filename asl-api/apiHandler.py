@@ -1,21 +1,28 @@
 import json
 # TODO: in the future investigate if passing a single instance around is faster than spawning one per thread
-from prd_predictor_script import Predictor
 from mongoDriver import mongoDriver
 from bson import Binary
 from PIL import Image
 import io
 from keras.preprocessing import image
-def predict_image(file_to_upload):
+from celeryTask import predict_image_task
+from mongoHelpers import get_data_from_db,get_json_from_mongo
+
+def predict_image_endpoint(file_to_upload):
     image_id=create_pred_doc(file_to_upload)
 
-    predictor = Predictor()
-    prediction = predictor.predict(image_id)
-    if(prediction):
-        return {"prediction": prediction}, 200
+    result=predict_image_task.delay(str(image_id))
+    if(image_id):
+        return {"id": str(image_id)}, 200
     else:
         return False, 500
 
+def get_job(id):
+    result=get_data_from_db(id)
+    if(result):
+        return get_json_from_mongo(result), 200
+    else:
+        return False, 500
 
 def create_pred_doc(img_file):
     imgByteArr = io.BytesIO()

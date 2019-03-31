@@ -17,6 +17,11 @@ services:
     ports:
       - 27017:27017
     command: mongod --smallfiles # --quiet
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
 networks:
   default:
     name: web_dev
