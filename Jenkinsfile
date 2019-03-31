@@ -58,6 +58,8 @@ pipeline {
         always {
           sh """
           docker-compose -f compose-tf-serving.yml down
+          cd asl-api
+          docker-compose -f MaaS-docker-compose.yml down
           """
 
          echo 'Archive artifacts and test results'
