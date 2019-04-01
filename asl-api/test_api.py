@@ -128,10 +128,17 @@ def test_job_A(url):
     files = {'file_to_upload': open('A_test.jpg', 'rb')}
     response = requests.post(testAPIBasePath, files=files)
     payload = response.json()
-    time.sleep(2)
     testAPIBasePath = "{}/test/api/job".format(url)
     response = requests.post(testAPIBasePath, data={'id':payload['id'] })
     data = response.json()
+    timeout=0
+    while (data["result"] != "complete" and timeout <5):
+        testAPIBasePath = "{}/test/api/job".format(url)
+        response = requests.post(testAPIBasePath, data={'id':payload['id'] })
+        data = response.json()
+        timeout+=1
+        time.sleep(2)
+        #wait till job is complete or is timedout
     assert response.status_code == 200
     assert data["_id"] == payload['id']
     assert data["result"] == "complete"
