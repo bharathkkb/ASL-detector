@@ -20,7 +20,7 @@ pipeline {
                 cd image-classifier
                 python convert_to_tf_serving.py
                 cd ..
-                docker-compose -f compose-tf-mongo-jenkins.yml up --d --build
+                docker-compose -f compose-dev-package.yml up --d --build
                 """
 
                 echo 'Building locally'
@@ -56,7 +56,7 @@ pipeline {
     post {
         always {
           sh """
-          docker-compose -f compose-tf-mongo-jenkins.yml down
+          docker-compose -f compose-dev-package.yml down
           """
 
          echo 'Archive artifacts and test results'

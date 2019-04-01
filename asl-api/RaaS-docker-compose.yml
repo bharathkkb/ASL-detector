@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+networks:
+  default:
+    name: web_dev

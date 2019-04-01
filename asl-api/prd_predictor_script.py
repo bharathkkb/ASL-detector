@@ -7,36 +7,17 @@ import cv2
 from PIL import Image
 import io
 from keras.preprocessing import image
-from mongoDriver import mongoDriver
-##helpers
-def get_data_from_db(id):
-    try:
-        query = dict()
-        query["_id"] = id
-        returnData = mongoDriver().getFindOne("asl-db", "testimg", query)
-        return returnData
-    except Exception as ex:
-        print(ex)
-        print(traceback.print_exc())
-        return False
-
-def update_result_status_to_db(id,status):
-    try:
-        query = dict()
-        query["_id"] = id
-        returnData= mongoDriver().getFindOne("asl-db", "testimg", query)
-        returnData["result"]=status
-        update=mongoDriver().updateDict("asl-db", "testimg", returnData)
-        print(update)
-    except Exception as ex:
-        print(ex)
-        print(traceback.print_exc())
-        return False
-
+from mongoHelpers import *
+import os
 
 class Predictor:
     def __init__(self):
-        self.tf_serving_base = "http://localhost:8501"
+        SECRET_KEY = os.environ.get('AM_I_IN_A_DOCKER_CONTAINER', False)
+        if SECRET_KEY:
+            self.tf_serving_base = "http://asl-tf-serving:8501"
+        else:
+            self.tf_serving_base = "http://localhost:8501"
+
         self.tf_serving_version = "v1"
         self.tf_serving_model_name = "asl_classifier_model"
 
@@ -54,6 +35,7 @@ class Predictor:
                                                                self.tf_serving_version, self.tf_serving_model_name), json=payload)
             pred = json.loads(r.content.decode('utf-8'))
             update_result_status_to_db(img_id,"complete")
+            update_result_data_to_db(img_id,pred)
             return pred
         except Exception as ex:
             print(ex)

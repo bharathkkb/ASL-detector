@@ -22,6 +22,15 @@ services:
     command: redis-server
     ports:
       - '6379:6379'
+  asl-worker:
+    restart: always
+    environment:
+      - AM_I_IN_A_DOCKER_CONTAINER=1
+    build:
+      context: .
+      dockerfile: ./Dockerfile-celery-worker
+    container_name: asl-worker
+    image: asl-worker
 networks:
   default:
     name: web_dev
