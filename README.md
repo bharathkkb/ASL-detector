@@ -23,7 +23,7 @@ This will download the model to /asl-api
 Clone this repo
 
 ```
-docker-compose -f compose-asl-api up --d
+docker-compose -f compose-dev-package.yml up --d
 ```
 
 This will build the system and run the server
@@ -32,5 +32,5 @@ The endpoint will be http://localhost:5000/test/api
 To stop the API server
 
 ```
-docker-compose -f compose-asl-api down
+docker-compose -f compose-dev-package.yml down
 ```
