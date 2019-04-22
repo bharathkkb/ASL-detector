@@ -31,9 +31,15 @@ test_images = []
 for image_dir in glob.iglob(test_dir + '/**/*.jpg', recursive=True):
     test_images.append(image_dir)
 
+
 for image in test_images:
     image_name = image.split('/').pop()
+    image_dir = image.split('/')[3]
     img = equalize_histogram_clahe(cv2.imread(image))
-    cv2.imwrite(os.path.join('../asl-data/asl_alphabet_modified' , image_name), img)
+    if not os.path.exists('../asl-data/asl_alphabet_modified/'+ image_dir):
+       os.makedirs('../asl-data/asl_alphabet_modified/'+ image_dir)
+   
+    cv2.imwrite(os.path.join('../asl-data/asl_alphabet_modified/' +image_dir , image_name), img)
+    
 
     
