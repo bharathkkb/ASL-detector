@@ -1,0 +1,13 @@
+version: '3.5'
+services:
+  asl-frontend:
+    restart: always
+    environment:
+      - AM_I_IN_A_DOCKER_CONTAINER=1
+    build:
+      context: .
+      dockerfile: ./Dockerfile-ui-dev
+    container_name: asl-ui-dev
+    image: asl-ui-dev
+    ports:
+      - 80:80
