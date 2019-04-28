@@ -33,9 +33,8 @@ const Prediction = ({ prediction }: { prediction: ?string }): Node => {
     return null;
   }
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: 'center' }} id="prediction">
       {prediction}
-      <br />
     </div>
   );
 };
@@ -94,7 +93,7 @@ export default class App extends Component<Props, State> {
       <div>
         <Prediction prediction={this.state.prediction} />
         <Loading isLoading={this.state.isLoading}>
-          <input type="file" onChange={this.submit} />
+          <input type="file" onChange={this.submit} id="imageupload" />
         </Loading>
       </div>
     );
