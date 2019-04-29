@@ -43,9 +43,11 @@ pipeline {
             echo 'Building tf serving'
             sh "ls"
             sh """
+            export FRONTEND_DOMAIN="http://localhost:5050"
+             export CI=true npm test
             yarn install
             yarn test-coverage
-            yarn test a --watchAll=false
+            yarn test a --watchAll=false --forceExit
 
             """
 
