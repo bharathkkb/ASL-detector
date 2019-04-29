@@ -12,7 +12,9 @@ describe('sample test', () => {
 });
 
 describe('image upload', () => {
-  let browser;
+  let browser = puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   let page;
   beforeAll(async () => {
     browser = await puppeteer.launch();
