@@ -12,12 +12,12 @@ describe('sample test', () => {
 });
 
 describe('image upload', () => {
-  let browser = puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  });
+  let browser;
   let page;
   beforeAll(async () => {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     page = await browser.newPage();
     await page.goto(DOMAIN);
     await page.waitForSelector('#imageupload');
