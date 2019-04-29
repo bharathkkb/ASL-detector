@@ -44,9 +44,9 @@ pipeline {
             sh "ls"
             sh """
             export FRONTEND_DOMAIN="http://localhost:5050"
-             export CI=true npm test
+            export CI=true npm test
             yarn install
-            yarn test-coverage
+            yarn test-coverage --watchAll=false --forceExit
             yarn test a --watchAll=false --forceExit
 
             """
