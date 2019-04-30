@@ -20,7 +20,7 @@ pipeline {
                 cd image-classifier
                 python convert_to_tf_serving.py
                 cd ..
-                docker-compose -f compose-dev-package.yml up --d --build
+                docker-compose -f compose-dev.yml up --d --build
                 """
 
                 echo 'Building locally'
@@ -43,8 +43,11 @@ pipeline {
             echo 'Building tf serving'
             sh "ls"
             sh """
+            export FRONTEND_DOMAIN="http://localhost:5050"
+            export CI=true npm test
             yarn install
-            yarn test-coverage
+            yarn test-coverage --watchAll=false --forceExit
+            yarn test a --watchAll=false --forceExit
 
             """
 
@@ -56,7 +59,7 @@ pipeline {
     post {
         always {
           sh """
-          docker-compose -f compose-dev-package.yml down
+          docker-compose -f compose-dev.yml down
           """
 
          echo 'Archive artifacts and test results'

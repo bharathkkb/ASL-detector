@@ -1,4 +1,68 @@
 version: '3.5'
+services:
+  asl-frontend:
+    restart: always
+    environment:
+      - AM_I_IN_A_DOCKER_CONTAINER=1
+    build:
+      context: .
+      dockerfile: ./Dockerfile-ui-dev
+    container_name: asl-ui-dev
+    image: asl-ui-dev
+    ports:
+      - 5050:80
+  asl-tf-serving:
+    image: tensorflow/serving
+    container_name: asl-tf-serving
+    restart: always
+    environment:
+      - MODEL_NAME=asl_classifier_model
+    volumes:
+      - ./asl_classifier_model:/models/asl_classifier_model
+    ports:
+      - 8501:8501
+      - 8500:8500
+    networks:
+      - web_dev
+  mongodb:
+    image: mongo:latest
+    container_name: 'mongodb'
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles # --quiet
+    networks:
+      - web_dev
+  redis:
+    image: 'redis:3.0-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    networks:
+      - web_dev
+  asl-worker:
+    restart: always
+    environment:
+      - AM_I_IN_A_DOCKER_CONTAINER=1
+    build:
+      context: .
+      dockerfile: ./Dockerfile-celery-worker
+    container_name: asl-worker
+    image: asl-worker
+    networks:
+      - web_dev
+  asl-api-dev:
+    restart: always
+    environment:
+      - AM_I_IN_A_DOCKER_CONTAINER=1
+    build:
+      context: .
+      dockerfile: ./Dockerfile-api-dev
+    container_name: asl-api-dev
+    image: asl-api-dev
+    ports:
+      - 5000:5000
+    networks:
+      - web_dev
 networks:
-  default:
-   name: web_dev
+  web_dev:
+    driver: bridge

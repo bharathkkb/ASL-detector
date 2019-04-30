@@ -1,15 +1,13 @@
 #build react
 FROM node:10-alpine as react-build
-WORKDIR frontend
-COPY yarn.lock .
-COPY ./frontend/package.json .
+WORKDIR .
+COPY . ./
 RUN yarn install
-COPY ./frontend/src .
-RUN touch .env.production
-RUN echo 'REACT_APP_DOMAIN=http://34.74.97.21:5000' >> .env.production
+RUN touch /frontend/.env.production
+RUN echo 'REACT_APP_DOMAIN=http://localhost:5000' >> /frontend/.env.production
 RUN yarn build
 #not needed for smoke tests hence disable
 FROM nginx:alpine
-COPY --from=react-build /build /usr/share/nginx/html
+COPY --from=react-build /frontend/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
