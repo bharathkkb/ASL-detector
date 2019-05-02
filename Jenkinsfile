@@ -33,7 +33,9 @@ pipeline {
                 . env/bin/activate
                 pip install -r requirements.txt
 
-                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
+                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=1 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
+                cd wb-unittests
+                coverage run --rcfile=.coveragerc -m unittest discover -s . -p '*_testing.py' -v
                 """
 
             }
