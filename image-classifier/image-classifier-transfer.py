@@ -12,6 +12,7 @@ import glob
 from keras import layers
 from keras import models
 from keras import optimizers
+from keras.models import load_model
 from keras.applications import VGG16
 from keras.preprocessing.image import ImageDataGenerator
 from keras_preprocessing.image import img_to_array, load_img
@@ -20,13 +21,16 @@ from sklearn import preprocessing
 from tensorflow.python.client import device_lib
 from keras import backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+from sklearn.metrics import accuracy_score 
 # gpu
 print(device_lib.list_local_devices())
 K.tensorflow_backend._get_available_gpus()
+pd.set_option('display.max_rows', 1000)
 
 
-train_dir = '/new-asl-data/asl_alphabet_train_kaggle'
-test_dir = '/new-asl-data/asl_alphabet_test_real_world'
+train_dir = '/asl-modified-kushal/asl_alphabet_modified'
+test_dir = '/new-asl-data/asl_alphabet_test_real_world_+_kaggle'
+# test_dir = '/new-2-asl-data/asl-data/asl_alphabet_test'
 
 test_images = []
 img_h_w = 200
@@ -37,7 +41,7 @@ vgg_base = VGG16(weights='imagenet', include_top=False,
 model = models.Sequential()  # Add the VGG base model
 model.add(vgg_base)  # Add new layers
 model.add(layers.Flatten())
-model.add(layers.Dense(4096, activation='relu'))
+model.add(layers.Dense(8192, activation='relu'))
 model.add(layers.Dropout(0.5))
 model.add(layers.Dense(4096, activation='relu'))
 model.add(layers.Dropout(0.5))
@@ -51,18 +55,18 @@ model.summary()
 #model.compile(loss='categorical_crossentropy',             optimizer=optimizers.RMSprop(lr=1e-4), metrics=['acc'])
 
 model.compile(loss='categorical_crossentropy',
-              optimizer=optimizers.SGD(lr=1e-3, decay=1e-6, momentum=0.9, nesterov=True), metrics=['acc'])
+              optimizer=optimizers.SGD(lr=0.0001), metrics=['acc'])
 
-# This helps prevent overfitting, since we are using a small dataset
+#This helps prevent overfitting, since we are using a small dataset
 datagen = ImageDataGenerator(rescale=1. / 255,  # Scale the image between 0 and 1
-                             rotation_range=40,
-                             width_shift_range=0.2,
-                             height_shift_range=0.2,
-                             shear_range=0.2,
-                             zoom_range=0.2,
+                             rotation_range=10,
+                             width_shift_range=0.1,
+                             height_shift_range=0.1,
+                             shear_range=0.05,
+                             zoom_range=0.1,
                              validation_split=0.2,
-                             horizontal_flip=True,
-                             fill_mode='nearest')
+                             horizontal_flip=False,
+                             fill_mode='constant')
 
 
 train_generator = datagen.flow_from_directory(
@@ -98,7 +102,7 @@ test_generator = datagen.flow_from_directory(
 STEP_SIZE_TRAIN = train_generator.n // train_generator.batch_size
 STEP_SIZE_VALID = val_generator.n // val_generator.batch_size
 STEP_SIZE_TEST = test_generator.n / test_generator.batch_size
-print(val_generator.class_indices)
+print(test_generator.class_indices)
 # The training part
 # We train for 64 epochs with about 100 steps per epoch
 callbacks = [EarlyStopping(monitor='val_loss', patience=2),
@@ -113,11 +117,13 @@ history = model.fit_generator(train_generator,
                               workers=4)
 
 # Save the model
-model.save_weights('model_weights.h5')
-model.save('model_keras_new.h5')
+model.save_weights('model_keras_new_kushal.h5')
+model.save('model_keras_new_kushal.h5')
 # model.evaluate_generator(generator=test_generator)
 test_generator.reset()
-
+model = load_model('model_keras_new_kushal.h5')
+model.compile(loss='categorical_crossentropy',
+              optimizer=optimizers.SGD(lr=0.0001), metrics=['acc'])
 pred = model.predict_generator(test_generator, verbose=1, steps=STEP_SIZE_TEST)
 predicted_class_indices = np.argmax(pred, axis=1)
 labels = (train_generator.class_indices)
@@ -127,4 +133,7 @@ filenames = test_generator.filenames
 results = pd.DataFrame({"Filename": filenames,
                         "Predictions": predictions})
 print(results)
+correctlabels=[filename.split("/")[0] for filename in filenames]
 
+acc_score = accuracy_score(correctlabels, predictions)
+print("accuracy = {}".format(acc_score))
