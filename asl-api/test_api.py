@@ -96,33 +96,7 @@ def hello_schema(url, schema):
     validate_api_call(schema, raw_request=response.request,
                       raw_response=response)
 
-# # pytest for validating hello schema
-
-# class alphabetTest(unittest.TestCase):
-#     def __init__(self, imgPath, arrKey):
-#         super(alphabetTest, self).__init__()
-#         self.imgPath = imgPath
-#         self.arrKey = arrKey
-#     def runTest(self):
-#         testAPIBasePath = "{}/test/api/predict".format(url)
-#         files = {'file_to_upload': open(imgPath, 'rb')}
-#         response = requests.post(testAPIBasePath, files=files)
-#         payload = response.json()
-#         testAPIBasePath = "{}/test/api/job".format(url)
-#         response = requests.post(testAPIBasePath, data={'id':payload['id'] })
-#         data = response.json()
-#         timeout=0
-#         while (data["result"] != "complete" and timeout <5):
-#             testAPIBasePath = "{}/test/api/job".format(url)
-#             response = requests.post(testAPIBasePath, data={'id':payload['id'] })
-#             data = response.json()
-#             timeout+=1
-#             time.sleep(2)
-#             #wait till job is complete or is timedout
-#         assert response.status_code == 200
-#         assert data["_id"] == payload['id']
-#         assert data["result"] == "complete"
-#         assert data["prediction"]["predictions"][0][arrKey] == 1
+# pytest for validating hello schema
 
 def test_hello_schema(url):
     testAPIBasePath = "{}/test/api".format(url)
