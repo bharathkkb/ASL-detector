@@ -6,6 +6,7 @@ import { Spinner } from 'baseui/spinner';
 import delay from 'delay';
 import { dataURLToBlob } from 'blob-util';
 import Prediction from './Prediction';
+import CropModal from './CropModal';
 import WebcamModal from './WebcamModal';
 import { predict, getPrediction } from '../helpers/apis';
 import { getAlphabet } from '../helpers/alphabet';
@@ -21,6 +22,7 @@ type State = {|
   prediction: ?string,
   src: ?string,
   showWebcam: boolean,
+  showCrop: boolean,
 |};
 
 const resetState = Object.freeze({
@@ -38,6 +40,7 @@ export default class ASLDetector2 extends Component<Props, State> {
     prediction: null,
     src: null,
     showWebcam: false,
+    showCrop: false,
   };
 
   handleDrop = async (
@@ -60,14 +63,18 @@ export default class ASLDetector2 extends Component<Props, State> {
     }
 
     const [file: File] = acceptedFiles;
-    await this.sendFile(file);
+    this.setState({
+      errorMessage: '',
+      src: URL.createObjectURL(file),
+      showCrop: true,
+    });
   };
 
-  sendFile = async (file: File) => {
+  sendFile = async (file: Blob) => {
     this.setState({ disabled: true });
     console.log(file);
     const formData = new FormData();
-    formData.append('file_to_upload', file);
+    formData.append('file_to_upload', new File([file], 'image.jpeg'));
     let id;
 
     try {
@@ -80,7 +87,7 @@ export default class ASLDetector2 extends Component<Props, State> {
     await this.waitforPrediction(id, file);
   };
 
-  waitforPrediction = async (id: string, file: File) => {
+  waitforPrediction = async (id: string, file: Blob) => {
     prevId = id;
     const idForm = new FormData();
     idForm.append('id', id);
@@ -136,9 +143,23 @@ export default class ASLDetector2 extends Component<Props, State> {
   };
 
   handleWebcamScreenshot = async (imgSrc: string) => {
-    this.setState({ showWebcam: false });
-    console.log(imgSrc);
-    await this.sendFile(dataURLToBlob(imgSrc));
+    this.setState({
+      errorMessage: '',
+      showWebcam: false,
+      src: imgSrc,
+      showCrop: true,
+    });
+    // console.log(imgSrc);
+    // await this.sendFile(dataURLToBlob(imgSrc));
+  };
+
+  closeCrop = () => {
+    this.setState({ showCrop: false });
+  };
+
+  confirmCrop = async (file: Blob) => {
+    this.setState({ showCrop: false });
+    await this.sendFile(file);
   };
 
   render(): Node {
@@ -160,6 +181,12 @@ export default class ASLDetector2 extends Component<Props, State> {
             onRetry={this.reset}
           />
         </div>
+        <CropModal
+          isOpen={this.state.showCrop}
+          onClose={this.closeCrop}
+          onConfirm={this.confirmCrop}
+          src={this.state.src}
+        />
         <WebcamModal
           isOpen={this.state.showWebcam}
           onClose={this.closeWebcam}
