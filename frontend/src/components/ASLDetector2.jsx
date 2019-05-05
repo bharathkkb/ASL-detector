@@ -20,7 +20,7 @@ type State = {|
   errorMessage: string,
   prediction: ?string,
   src: ?string,
-  showWebcam?: boolean,
+  showWebcam: boolean,
 |};
 
 const resetState = Object.freeze({
@@ -37,6 +37,7 @@ export default class ASLDetector2 extends Component<Props, State> {
     ...resetState,
     prediction: null,
     src: null,
+    showWebcam: false,
   };
 
   handleDrop = async (
@@ -150,13 +151,15 @@ export default class ASLDetector2 extends Component<Props, State> {
           </>
         ) : null}
         <Prediction prediction={this.state.prediction} src={this.state.src} />
-        <FileUploader
-          disabled={this.state.disabled}
-          onDrop={this.handleDrop}
-          onCancel={this.handleCancel}
-          errorMessage={this.state.errorMessage}
-          onRetry={this.reset}
-        />
+        <div id="imageupload">
+          <FileUploader
+            disabled={this.state.disabled}
+            onDrop={this.handleDrop}
+            onCancel={this.handleCancel}
+            errorMessage={this.state.errorMessage}
+            onRetry={this.reset}
+          />
+        </div>
         <WebcamModal
           isOpen={this.state.showWebcam}
           onClose={this.closeWebcam}

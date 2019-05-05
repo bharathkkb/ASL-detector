@@ -20,11 +20,11 @@ describe('image upload', () => {
     });
     page = await browser.newPage();
     await page.goto(DOMAIN);
-    await page.waitForSelector('#imageupload');
+    await page.waitForSelector('#imageupload input[type="file"]');
   });
 
   it('has successful result A', async () => {
-    const input = await page.$('#imageupload');
+    const input = await page.$('#imageupload input[type="file"]');
     await input.uploadFile(A_TEST_FILEPATH);
     await page.waitForSelector('#prediction');
 
