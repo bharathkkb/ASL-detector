@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import { Button } from 'baseui/button';
 import { FileUploader } from 'baseui/file-uploader';
 import { Spinner } from 'baseui/spinner';
@@ -145,10 +145,10 @@ export default class ASLDetector2 extends Component<Props, State> {
     return (
       <div>
         {this.state.disabled ? (
-          <>
+          <Fragment>
             <Spinner />
             <Button onClick={this.handleCancel}>Cancel</Button>
-          </>
+          </Fragment>
         ) : null}
         <Prediction prediction={this.state.prediction} src={this.state.src} />
         <div id="imageupload">
