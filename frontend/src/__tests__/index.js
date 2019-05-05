@@ -5,12 +5,6 @@ const A_TEST_FILEPATH = require.resolve('../../../asl-api/A_test.jpg');
 const DOMAIN = process.env.FRONTEND_DOMAIN;
 console.log('domain is ', DOMAIN);
 
-describe('sample test', () => {
-  it('works', () => {
-    expect(1).toBe(1);
-  });
-});
-
 describe('image upload', () => {
   let browser;
   let page;
