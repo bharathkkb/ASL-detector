@@ -43,7 +43,7 @@ const App = (): Node => (
     <ThemeProvider theme={DarkTheme}>
       <HeaderNavigation>
         <NavigationList align={ALIGN.center}>
-          <NavigationItem>ASL Detector</NavigationItem>
+          <NavigationItem id="asl-nav-txt">ASL Detector</NavigationItem>
         </NavigationList>
       </HeaderNavigation>
       <Block overrides={BlockOverrides}>
