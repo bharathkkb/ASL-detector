@@ -123,17 +123,21 @@ export default class CropModal extends Component<Props, State> {
         <ModalHeader>Crop Image</ModalHeader>
         <ModalBody>
           <Centered>
-            <ReactCrop
-              src={this.props.src || ''}
-              crop={this.state.crop}
-              onImageLoaded={this.onImageLoaded}
-              onComplete={this.onCropComplete}
-              onChange={this.onCropChange}
-            />
+            {this.props.src ? (
+              <ReactCrop
+                src={this.props.src}
+                crop={this.state.crop}
+                onImageLoaded={this.onImageLoaded}
+                onComplete={this.onCropComplete}
+                onChange={this.onCropChange}
+              />
+            ) : null}
           </Centered>
         </ModalBody>
         <ModalFooter>
-          <ModalButton onClick={this.handleConfirm}>Confirm</ModalButton>
+          <ModalButton id="crop-confirm" onClick={this.handleConfirm}>
+            Confirm
+          </ModalButton>
           <ModalButton onClick={this.props.onClose}>Close</ModalButton>
         </ModalFooter>
       </Modal>

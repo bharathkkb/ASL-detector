@@ -26,6 +26,8 @@ describe('image upload', () => {
   it('has successful result A', async () => {
     const input = await page.$('#imageupload input[type="file"]');
     await input.uploadFile(A_TEST_FILEPATH);
+    await page.waitForSelector('#crop-confirm');
+    await page.click('#crop-confirm');
     await page.waitForSelector('#prediction');
 
     const prediction = await page.$eval('#prediction h1', e => e.innerHTML);
