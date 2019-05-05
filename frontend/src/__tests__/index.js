@@ -28,7 +28,7 @@ describe('image upload', () => {
     await input.uploadFile(A_TEST_FILEPATH);
     await page.waitForSelector('#prediction');
 
-    const prediction = await page.$eval('#prediction', e => e.innerHTML);
+    const prediction = await page.$eval('#prediction h1', e => e.innerHTML);
     expect(prediction).toMatchSnapshot();
   });
 
