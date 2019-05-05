@@ -36,16 +36,20 @@ type State = {|
   croppedImageUrl: ?string,
 |};
 
+const defaultCrop: Crop = {
+  aspect: 1 / 1,
+  x: 0,
+  y: 0,
+  width: CROP_WIDTH,
+  height: CROP_HEIGHT,
+};
+
 export default class CropModal extends Component<Props, State> {
   props: Props;
 
   state: State = {
     crop: {
-      aspect: 1 / 1,
-      x: 0,
-      y: 0,
-      width: CROP_WIDTH,
-      height: CROP_HEIGHT,
+      ...defaultCrop,
     },
     croppedImageUrl: null,
   };
@@ -60,7 +64,7 @@ export default class CropModal extends Component<Props, State> {
     this.imageRef = image;
   };
 
-  onCropComplete = async (crop: Crop) => {
+  onCropComplete = async (crop: Crop): Promise<string> => {
     if (this.imageRef && crop.width && crop.height) {
       const croppedImageUrl = this.getCroppedImg(
         this.imageRef,
@@ -68,7 +72,9 @@ export default class CropModal extends Component<Props, State> {
         'image.jpeg'
       );
       this.setState({ croppedImageUrl });
+      return croppedImageUrl;
     }
+    return '';
   };
 
   getCroppedImg = (image: HTMLImageElement, crop: Crop, fileName: string) => {
@@ -97,16 +103,14 @@ export default class CropModal extends Component<Props, State> {
   };
 
   handleConfirm = async () => {
-    const { croppedImageUrl } = this.state;
-    console.log(croppedImageUrl);
+    let { croppedImageUrl } = this.state;
+    if (!croppedImageUrl) {
+      croppedImageUrl = await this.onCropComplete(defaultCrop);
+    }
     this.props.onConfirm(await dataURLToBlob(croppedImageUrl));
   };
 
   render() {
-    if (!this.props.src) {
-      return null;
-    }
-
     return (
       <Modal isOpen={this.props.isOpen} onClose={this.props.onClose}>
         <ModalHeader>Crop Image</ModalHeader>
