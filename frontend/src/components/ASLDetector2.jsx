@@ -3,6 +3,7 @@ import React, { Component, Fragment, type Node } from 'react';
 import { Button } from 'baseui/button';
 import { FileUploader } from 'baseui/file-uploader';
 import { Spinner } from 'baseui/spinner';
+import { styled } from 'baseui';
 import delay from 'delay';
 import { dataURLToBlob } from 'blob-util';
 import Prediction from './Prediction';
@@ -13,6 +14,12 @@ import { getAlphabet } from '../helpers/alphabet';
 
 const delayTime = 1000 * 1; // 1 second
 const wait = () => delay(delayTime);
+
+const Centered = styled('div', {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
 
 type Props = {};
 
@@ -167,8 +174,18 @@ export default class ASLDetector2 extends Component<Props, State> {
       <div>
         {this.state.disabled ? (
           <Fragment>
-            <Spinner />
-            <Button onClick={this.handleCancel}>Cancel</Button>
+            <Centered>
+              <div>
+                <Centered>
+                  <Spinner />
+                </Centered>
+                <br />
+                <Centered>
+                  <Button onClick={this.handleCancel}>Cancel</Button>
+                </Centered>
+              </div>
+            </Centered>
+            <br />
           </Fragment>
         ) : null}
         <Prediction prediction={this.state.prediction} src={this.state.src} />
@@ -181,6 +198,7 @@ export default class ASLDetector2 extends Component<Props, State> {
             onRetry={this.reset}
           />
         </div>
+        <br />
         <CropModal
           isOpen={this.state.showCrop}
           onClose={this.closeCrop}
@@ -192,9 +210,11 @@ export default class ASLDetector2 extends Component<Props, State> {
           onClose={this.closeWebcam}
           onConfirm={this.handleWebcamScreenshot}
         />
-        <Button onClick={this.openWebcam} disabled={this.state.disabled}>
-          Use Webcam
-        </Button>
+        <Centered>
+          <Button onClick={this.openWebcam} disabled={this.state.disabled}>
+            Use Webcam
+          </Button>
+        </Centered>
       </div>
     );
   }

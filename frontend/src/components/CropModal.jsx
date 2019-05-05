@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalButton,
 } from 'baseui/modal';
+import { styled } from 'baseui';
 import ReactCrop from 'react-image-crop';
 import { dataURLToBlob } from 'blob-util';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -15,6 +16,12 @@ import { string } from 'postcss-selector-parser';
 const CROP_WIDTH = 200;
 
 const CROP_HEIGHT = 200;
+
+const Centered = styled('div', {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+});
 
 type Crop = {
   aspect?: number,
@@ -115,13 +122,15 @@ export default class CropModal extends Component<Props, State> {
       <Modal isOpen={this.props.isOpen} onClose={this.props.onClose}>
         <ModalHeader>Crop Image</ModalHeader>
         <ModalBody>
-          <ReactCrop
-            src={this.props.src}
-            crop={this.state.crop}
-            onImageLoaded={this.onImageLoaded}
-            onComplete={this.onCropComplete}
-            onChange={this.onCropChange}
-          />
+          <Centered>
+            <ReactCrop
+              src={this.props.src || ''}
+              crop={this.state.crop}
+              onImageLoaded={this.onImageLoaded}
+              onComplete={this.onCropComplete}
+              onChange={this.onCropChange}
+            />
+          </Centered>
         </ModalBody>
         <ModalFooter>
           <ModalButton onClick={this.handleConfirm}>Confirm</ModalButton>

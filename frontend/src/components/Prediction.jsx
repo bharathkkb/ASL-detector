@@ -1,5 +1,5 @@
 // @flow
-import React, { type Node } from 'react';
+import React, { Fragment, type Node } from 'react';
 import { Card, StyledBody, StyledAction, StyledThumbnail } from 'baseui/card';
 import { Button } from 'baseui/button';
 
@@ -14,11 +14,14 @@ const Prediction = ({ prediction, src }: Props): Node => {
   }
 
   return (
-    <Card title={prediction} id="prediction">
-      <StyledBody>
-        <img src={src} alt="Prediction" />
-      </StyledBody>
-    </Card>
+    <Fragment>
+      <Card title={prediction} id="prediction">
+        <StyledBody>
+          <img src={src} alt="Prediction" />
+        </StyledBody>
+      </Card>
+      <br />
+    </Fragment>
   );
 };
 
