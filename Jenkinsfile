@@ -5,21 +5,9 @@ pipeline {
         stage('Build and test backend locally') {
             steps {
               echo 'Downloading Model'
-                script {
-                googleStorageDownload bucketUri: 'gs://asl-models/model_keras_new_2.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
-                }
                 echo 'Building tf serving'
                 sh "ls"
                 sh """
-                cd asl-api
-                python3 -m virtualenv env
-                ls
-                . env/bin/activate
-                pip install -r requirements.txt
-                cd ..
-                cd image-classifier
-                python convert_to_tf_serving.py
-                cd ..
                 docker-compose -f compose-dev.yml up --d --build
                 """
 
@@ -29,6 +17,7 @@ pipeline {
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
+                python3 -m virtualenv env
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
