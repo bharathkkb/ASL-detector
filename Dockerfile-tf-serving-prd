@@ -3,7 +3,7 @@ WORKDIR model
 RUN gsutil cp gs://asl-models/asl_classifier_model.zip .
 RUN apt-get install zip unzip
 RUN unzip asl_classifier_model.zip
-RUN ls
+RUN rm -rf asl_classifier_model.zip
 
 FROM tensorflow/serving
 COPY --from=model-download /model /model
