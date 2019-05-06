@@ -1,0 +1,12 @@
+FROM google/cloud-sdk as model-download
+WORKDIR model
+RUN gsutil cp gs://asl-models/asl_classifier_model.zip .
+RUN apt-get install zip unzip
+RUN unzip asl_classifier_model.zip
+RUN ls
+
+FROM tensorflow/serving
+COPY --from=model-download /model /model
+EXPOSE 8500
+EXPOSE 8501
+CMD ["tensorflow_model_server", "--port=8500", "--rest_api_port=8501","--model_name=asl_classifier_model","--model_base_path=/model/asl_classifier_model"]
