@@ -26,7 +26,7 @@ describe('image upload', () => {
 
     const prediction = await page.$eval('#prediction h1', e => e.innerHTML);
     expect(prediction).toMatchSnapshot();
-  });
+  }, 20000);
 
   afterAll(async () => {
     await browser.close();
