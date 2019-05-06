@@ -34,7 +34,6 @@ pipeline {
                 pip install -r requirements.txt
                 """
                 sh """
-                set +e
                 cd asl-api
                 . env/bin/activate
                 pytest -q test_api.py --url=http://0.0.0.0:5000  --local=1 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
@@ -69,9 +68,9 @@ pipeline {
           """
 
          echo 'Archive artifacts and test results'
-         archive "asl-api/test-results/feature-html-report/*"
-         archive "asl-api/test-results/junit/*.xml"
-         archive "frontend/junit.xml"
+         archiveArtifacts "asl-api/test-results/feature-html-report/*"
+         archiveArtifacts "asl-api/test-results/junit/*.xml"
+         archiveArtifacts "frontend/junit.xml"
 
         junit 'asl-api/test-results/junit/*.xml'
         junit 'frontend/junit.xml'
@@ -105,7 +104,7 @@ pipeline {
             script {
             echo 'This build was successful.'
             if(GIT_BRANCH == 'master'){
-            if(GIT_PREVIOUS_SUCCESSFUL_COMMIT == GIT_PREVIOUS_COMMIT){
+            if(GIT_PREVIOUS_SUCCESSFUL_COMMIT &  GIT_PREVIOUS_SUCCESSFUL_COMMIT== GIT_PREVIOUS_COMMIT){
             echo 'Promoting to staging'
             withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh"""
