@@ -23,7 +23,6 @@ pipeline {
                 pip install -r requirements.txt
                 """
                 sh """
-                set +e
                 cd asl-api
                 . env/bin/activate
                 pytest -q test_api.py --url=http://0.0.0.0:5000  --local=1 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
