@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from skin_segmentation import extract_skin
+
 
 def equalize_histogram_clahe(img):
     img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
@@ -19,3 +21,12 @@ def equalize_histogram(img):
     # convert the YUV image back to RGB format
     img_output = cv2.cvtColor(img_yuv, cv2.COLOR_YUV2BGR)
     return img_output
+
+def remove_non_skin(img):
+    """
+    Extract the skin from the image by masking everything else with black pixels
+    
+    Input: image
+    Output: cv2 image
+    """
+    return extract_skin(img)
