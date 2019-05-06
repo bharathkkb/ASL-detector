@@ -6,7 +6,7 @@ COPY ./frontend/package.json .
 RUN yarn install
 COPY ./frontend/src .
 RUN touch .env.production
-RUN echo 'REACT_APP_DOMAIN=http://34.74.97.21:5000' >> .env.production
+RUN echo 'REACT_APP_DOMAIN=http://35.231.184.16:5000' >> .env.production
 RUN yarn build
 #not needed for smoke tests hence disable
 FROM nginx:alpine
