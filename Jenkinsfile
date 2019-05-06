@@ -6,7 +6,7 @@ pipeline {
             steps {
               echo 'Downloading Model'
                 script {
-                googleStorageDownload bucketUri: 'gs://asl-models/model_keras.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
+                googleStorageDownload bucketUri: 'gs://asl-models/model_keras_new_2.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
                 }
                 echo 'Building tf serving'
                 sh "ls"
