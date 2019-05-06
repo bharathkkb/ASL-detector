@@ -7,7 +7,7 @@ import cv2
 from PIL import Image
 import io
 from keras.preprocessing import image
-from mongoHelpers import *
+from mongoHelpers import MongoHelper
 import os
 
 class Predictor:
@@ -23,19 +23,19 @@ class Predictor:
 
     def predict(self, img_id):
         try:
-            data=get_data_from_db(img_id)
+            data=MongoHelper().get_data_from_db(img_id)
             print(img_id)
             image_to_pred = Image.open(io.BytesIO(data["img_for_pred"]))
             img = image.img_to_array(image_to_pred)
             payload = {
                 "instances": [img.tolist()]
             }
-            update_result_status_to_db(img_id,"processing")
+            MongoHelper().update_result_status_to_db(img_id,"processing")
             r = requests.post("{}/{}/models/{}:predict".format(self.tf_serving_base,
                                                                self.tf_serving_version, self.tf_serving_model_name), json=payload)
             pred = json.loads(r.content.decode('utf-8'))
-            update_result_status_to_db(img_id,"complete")
-            update_result_data_to_db(img_id,pred)
+            MongoHelper().update_result_status_to_db(img_id,"complete")
+            MongoHelper().update_result_data_to_db(img_id,pred)
             return pred
         except Exception as ex:
             print(ex)

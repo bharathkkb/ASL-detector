@@ -6,11 +6,11 @@ services:
       - AM_I_IN_A_DOCKER_CONTAINER=1
     build:
       context: .
-      dockerfile: ./Dockerfile-ui-dev
-    container_name: asl-ui-dev
-    image: asl-ui-dev
+      dockerfile: ./Dockerfile-ui-prd
+    container_name: asl-ui-prd
+    image: asl-ui-prd
     ports:
-      - 5050:80
+      - 80:80
   asl-tf-serving:
     image: tensorflow/serving
     container_name: asl-tf-serving
