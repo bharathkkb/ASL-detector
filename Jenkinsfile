@@ -69,7 +69,8 @@ pipeline {
           """
 
          echo 'Archive artifacts and test results'
-         archive "asl-api/test-results/*"
+         archive "asl-api/test-results/feature-html-report/*"
+         archive "asl-api/test-results/junit/*.xml"
          archive "frontend/junit.xml"
 
         junit 'asl-api/test-results/junit/*.xml'
