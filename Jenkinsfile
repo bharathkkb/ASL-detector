@@ -17,6 +17,7 @@ pipeline {
                 export BUILD_ID=dontKillMe
                 python3 --version
                 cd asl-api
+                python3 -m virtualenv env
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
