@@ -6,7 +6,7 @@ pipeline {
             steps {
               echo 'Downloading Model'
                 script {
-                googleStorageDownload bucketUri: 'gs://asl-models/model_keras.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
+                googleStorageDownload bucketUri: 'gs://asl-models/model_keras_new_2.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
                 }
                 echo 'Building tf serving'
                 sh "ls"
@@ -32,7 +32,11 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-
+                """
+                sh """
+                set +e
+                cd asl-api
+                . env/bin/activate
                 pytest -q test_api.py --url=http://0.0.0.0:5000  --local=1 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
                 cd wb-unittests
                 coverage run --rcfile=.coveragerc -m unittest discover -s . -p '*_testing.py' -v
@@ -65,7 +69,8 @@ pipeline {
           """
 
          echo 'Archive artifacts and test results'
-         archive "asl-api/test-results/*"
+         archive "asl-api/test-results/feature-html-report/*"
+         archive "asl-api/test-results/junit/*.xml"
          archive "frontend/junit.xml"
 
         junit 'asl-api/test-results/junit/*.xml'

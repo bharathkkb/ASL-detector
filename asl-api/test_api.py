@@ -98,7 +98,6 @@ def hello_schema(url, schema):
 
 # pytest for validating hello schema
 
-
 def test_hello_schema(url):
     testAPIBasePath = "{}/test/api".format(url)
     schema = flex.load(testAPIBasePath + '/swagger.json')
@@ -117,15 +116,48 @@ def test_hello_data(url):
 
 def test_pred_A(url):
     testAPIBasePath = "{}/test/api/predict".format(url)
-    files = {'file_to_upload': open('A_test.jpg', 'rb')}
+    files = {'file_to_upload': open('asl_alphabet_test/A_test.jpg', 'rb')}
     response = requests.post(testAPIBasePath, files=files)
     data = response.json()
     pytest.shared = data["id"]
     assert response.status_code == 200
 
-def test_job_A(url):
+@pytest.mark.parametrize(
+    'imgPath, arrKey', [
+        ('asl_alphabet_test/A_test.jpg', 0),
+        ('asl_alphabet_test/B_test.jpg', 1),
+        ('asl_alphabet_test/C_test.jpg', 2),
+        ('asl_alphabet_test/D_test.jpg', 3),
+        ('asl_alphabet_test/E_test.jpg', 4),
+        ('asl_alphabet_test/F_test.jpg', 5),
+        ('asl_alphabet_test/G_test.jpg', 6),
+        ('asl_alphabet_test/H_test.jpg', 7),
+        ('asl_alphabet_test/I_test.jpg', 8),
+        ('asl_alphabet_test/J_test.jpg', 9),
+        ('asl_alphabet_test/K_test.jpg', 10),
+        ('asl_alphabet_test/L_test.jpg', 11),
+        ('asl_alphabet_test/M_test.jpg', 12),
+        ('asl_alphabet_test/N_test.jpg', 13),
+        ('asl_alphabet_test/O_test.jpg', 14),
+        ('asl_alphabet_test/P_test.jpg', 15),
+        ('asl_alphabet_test/Q_test.jpg', 16),
+        ('asl_alphabet_test/R_test.jpg', 17),
+        ('asl_alphabet_test/S_test.jpg', 18),
+        ('asl_alphabet_test/T_test.jpg', 19),
+        ('asl_alphabet_test/U_test.jpg', 20),
+        ('asl_alphabet_test/V_test.jpg', 21),
+        ('asl_alphabet_test/W_test.jpg', 22),
+        ('asl_alphabet_test/X_test.jpg', 23),
+        ('asl_alphabet_test/Y_test.jpg', 24),
+        ('asl_alphabet_test/Z_test.jpg', 25),
+        ('asl_alphabet_test/del_test.jpg', 26),
+        ('asl_alphabet_test/nothing_test.jpg', 27),
+        ('asl_alphabet_test/space_test.jpg', 28),
+    ]
+)
+def test_job_Alphabet(imgPath,arrKey,url='http://0.0.0.0:5000'):
     testAPIBasePath = "{}/test/api/predict".format(url)
-    files = {'file_to_upload': open('A_test.jpg', 'rb')}
+    files = {'file_to_upload': open(imgPath, 'rb')}
     response = requests.post(testAPIBasePath, files=files)
     payload = response.json()
     testAPIBasePath = "{}/test/api/job".format(url)
@@ -142,7 +174,9 @@ def test_job_A(url):
     assert response.status_code == 200
     assert data["_id"] == payload['id']
     assert data["result"] == "complete"
-    assert data["prediction"]["predictions"][0][0] == 1
+    if(data["prediction"]["predictions"][0][arrKey] != 1):
+        print(data)
+    assert data["prediction"]["predictions"][0][arrKey] == 1
 
 def test_crop(url):
     testAPIBasePath = "{}/test/api/crop".format(url)
