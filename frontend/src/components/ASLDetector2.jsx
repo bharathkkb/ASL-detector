@@ -155,7 +155,7 @@ export default class ASLDetector2 extends Component<Props, State> {
     this.setState({
       errorMessage: '',
       showWebcam: false,
-      src: imgSrc,
+      uploadSrc: imgSrc,
       showCrop: true,
     });
     // console.log(imgSrc);
