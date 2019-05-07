@@ -1,6 +1,7 @@
 steps:
 - name: 'docker/compose:1.19.0'
   args: ['-f','compose-prd.yml','up', '-d']
+  timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['tag', 'workspace_app:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
 images: ['gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
