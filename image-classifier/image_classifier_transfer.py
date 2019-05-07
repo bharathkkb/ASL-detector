@@ -20,15 +20,28 @@ from sklearn import preprocessing
 from tensorflow.python.client import device_lib
 from keras import backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+
 # gpu
 print(device_lib.list_local_devices())
 K.tensorflow_backend._get_available_gpus()
 
 
-train_dir = '/asl-data/asl_alphabet_train'
-test_dir = '/asl-data/asl_alphabet_test'
+train_dir = '../asl-data/asl_alphabet_modified'
+test_dir = '../asl-data/asl_alphabet_test'
 
 test_images = []
+
+# Load Images from directory and store them in an array of test_images
+for image_dir in glob.iglob(test_dir + '/**/*.jpg', recursive=True):
+    test_images.append(image_dir)
+
+proccessed_images = []
+
+#Photopreprocessing
+#for image in test_images:
+#    proccessed_images.append(equalize_histogram_clahe(cv2.imread(image, cv2.IMREAD_COLOR))
+
+
 img_h_w = 200
 
 batch_size = 64
