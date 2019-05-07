@@ -4,6 +4,7 @@ import glob
 import os
 from skin_segmentation import extract_skin
 
+
 def equalize_histogram_clahe(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hsv[:,:,2] += 20
@@ -78,4 +79,3 @@ for image in test_images:
   cv2.imwrite(os.path.join('../new-asl-data/asl_alphabet_test_real_world_+_kaggle/modified/' +image_dir , image_name), img)
     
 
-    

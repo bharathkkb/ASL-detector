@@ -1,0 +1,6 @@
+[report]
+exclude_lines =
+      pragma: no cover
+      def get_json*
+      def __str__*
+      if __name__ == '__main__'*

@@ -6,7 +6,7 @@ pipeline {
             steps {
               echo 'Downloading Model'
                 script {
-                googleStorageDownload bucketUri: 'gs://asl-models/model_keras.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
+                googleStorageDownload bucketUri: 'gs://asl-models/model_keras_new_2.h5', credentialsId: 'cs161-jenkins', localDirectory: './asl-api'
                 }
                 echo 'Building tf serving'
                 sh "ls"
@@ -20,7 +20,7 @@ pipeline {
                 cd image-classifier
                 python convert_to_tf_serving.py
                 cd ..
-                docker-compose -f compose-dev-package.yml up --d --build
+                docker-compose -f compose-dev.yml up --d --build
                 """
 
                 echo 'Building locally'
@@ -32,8 +32,14 @@ pipeline {
                 ls
                 . env/bin/activate
                 pip install -r requirements.txt
-
-                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=0 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
+                """
+                sh """
+                set +e
+                cd asl-api
+                . env/bin/activate
+                pytest -q test_api.py --url=http://0.0.0.0:5000  --local=1 -vv -s --html=test-results/feature-html-report/index.html --junitxml=test-results/junit/feature-xml-report.xml
+                cd wb-unittests
+                coverage run --rcfile=.coveragerc -m unittest discover -s . -p '*_testing.py' -v
                 """
 
             }
@@ -43,8 +49,11 @@ pipeline {
             echo 'Building tf serving'
             sh "ls"
             sh """
+            export FRONTEND_DOMAIN="http://localhost:5050"
+            export CI=true npm test
             yarn install
-            yarn test-coverage
+            yarn test-coverage --watchAll=false --forceExit
+            yarn test a --watchAll=false --forceExit
 
             """
 
@@ -56,7 +65,7 @@ pipeline {
     post {
         always {
           sh """
-          docker-compose -f compose-dev-package.yml down
+          docker-compose -f compose-dev.yml down
           """
 
          echo 'Archive artifacts and test results'
