@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ASL-Application
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      run: ASL-Application
+  template:
+    metadata:
+      labels:
+        run: ASL-Application
+    spec:
+      containers:
+        - name: asl-api
+          image: gcr.io/cs161-prd/asl-api-dev:latest
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+        - name: asl-ui
+          image: gcr.io/cs161-prd/asl-ui-prd:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+        - name: asl-worker
+          image: gcr.io/cs161-prd/asl-worker:latest
+        - name: asl-tf-serving
+          image: gcr.io/cs161-prd/asl-tf-serving:latest
+          ports:
+            - containerPort: 8500
+              protocol: TCP
+        - name: mongo
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+              protocol: TCP
+        - name: redis
+          image: redis:3.0-alpine
+          ports:
+            - containerPort: 6379
+              protocol: TCP
