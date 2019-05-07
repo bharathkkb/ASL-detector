@@ -41,7 +41,6 @@ pipeline {
             export CI=true npm test
             yarn install
             yarn test-coverage --watchAll=false --forceExit
-            yarn test a --watchAll=false --forceExit
 
             """
 
