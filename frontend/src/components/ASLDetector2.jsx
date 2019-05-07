@@ -30,11 +30,13 @@ type State = {|
   src: ?string,
   showWebcam: boolean,
   showCrop: boolean,
+  uploadSrc: ?string,
 |};
 
 const resetState = Object.freeze({
   disabled: false,
   errorMessage: '',
+  uploadSrc: null,
 });
 
 let prevId: ?string = null;
@@ -72,7 +74,7 @@ export default class ASLDetector2 extends Component<Props, State> {
     const [file: File] = acceptedFiles;
     this.setState({
       errorMessage: '',
-      src: URL.createObjectURL(file),
+      uploadSrc: URL.createObjectURL(file),
       showCrop: true,
     });
   };
@@ -203,7 +205,7 @@ export default class ASLDetector2 extends Component<Props, State> {
           isOpen={this.state.showCrop}
           onClose={this.closeCrop}
           onConfirm={this.confirmCrop}
-          src={this.state.src}
+          src={this.state.uploadSrc}
         />
         <WebcamModal
           isOpen={this.state.showWebcam}
