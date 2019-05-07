@@ -1,9 +1,9 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-f','Dockerfile-celery-worker','tag', 'asl-worker:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+  args: ['build','-f','Dockerfile-celery-worker','tag', 'asl-worker:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA','.']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-f','Dockerfile-ui-prd','tag', 'asl-ui-prd:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+  args: ['build','-f','Dockerfile-ui-prd','tag', 'asl-ui-prd:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.' ]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-f','Dockerfile-api-dev','tag', 'asl-api-dev:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+  args: ['build','-f','Dockerfile-api-dev','tag', 'asl-api-dev:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.' ]
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build','-f','Dockerfile-tf-serving-prd','tag', 'asl-tf-serving:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA']
+  args: ['build','-f','Dockerfile-tf-serving-prd','tag', 'asl-tf-serving:latest', 'gcr.io/$PROJECT_ID/$REPO_NAME:$COMMIT_SHA', '.' ]
