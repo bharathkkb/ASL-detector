@@ -81,7 +81,6 @@ export default class ASLDetector2 extends Component<Props, State> {
 
   sendFile = async (file: Blob) => {
     this.setState({ disabled: true });
-    console.log(file);
     const formData = new FormData();
     formData.append('file_to_upload', new File([file], 'image.jpeg'));
     let id;
@@ -106,7 +105,6 @@ export default class ASLDetector2 extends Component<Props, State> {
     let predictionData;
     while (!found && prevId === id) {
       await wait();
-      console.log('waiting...');
       try {
         data = await getPrediction(idForm);
       } catch (err) {
@@ -125,7 +123,6 @@ export default class ASLDetector2 extends Component<Props, State> {
     }
 
     const result = getAlphabet(predictionData);
-    console.log(result);
 
     this.setState({
       prediction: result,
@@ -158,8 +155,6 @@ export default class ASLDetector2 extends Component<Props, State> {
       uploadSrc: imgSrc,
       showCrop: true,
     });
-    // console.log(imgSrc);
-    // await this.sendFile(dataURLToBlob(imgSrc));
   };
 
   closeCrop = () => {
