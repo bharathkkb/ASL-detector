@@ -1,9 +1,7 @@
-// import React from 'react';
 import puppeteer from 'puppeteer';
 
-const A_TEST_FILEPATH = require.resolve('../../../asl-api/A_test.jpg');
+const A_TEST_FILEPATH = require.resolve('../../../../asl-api/A_test.jpg');
 const DOMAIN = process.env.FRONTEND_DOMAIN;
-console.log('domain is ', DOMAIN);
 
 describe('image upload', () => {
   let browser;
@@ -27,8 +25,4 @@ describe('image upload', () => {
     const prediction = await page.$eval('#prediction h1', e => e.innerHTML);
     expect(prediction).toMatchSnapshot();
   }, 20000);
-
-  afterAll(async () => {
-    await browser.close();
-  });
 });
