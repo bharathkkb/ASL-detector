@@ -1,0 +1,11 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-f','Dockerfile-celery-worker','-t',  'gcr.io/$PROJECT_ID/asl-worker','.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-f','Dockerfile-ui-prd','-t','gcr.io/$PROJECT_ID/asl-ui-prd', '.' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-f','Dockerfile-api-dev','-t','gcr.io/$PROJECT_ID/asl-api-dev', '.' ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build','-f','Dockerfile-tf-serving-prd','-t', 'gcr.io/$PROJECT_ID/asl-tf-serving', '.' ]
+images: ['gcr.io/$PROJECT_ID/asl-worker','gcr.io/$PROJECT_ID/asl-ui-prd','gcr.io/$PROJECT_ID/asl-api-dev','gcr.io/$PROJECT_ID/asl-tf-serving']
+timeout: 1200s

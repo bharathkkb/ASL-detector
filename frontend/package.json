@@ -9,13 +9,19 @@
     "test-coverage": "yarn test --ci --coverage --reporters=default --reporters=jest-junit --reporters=jest-stare"
   },
   "devDependencies": {
+    "baseui": "^6.16.0",
+    "blob-util": "^2.0.2",
     "delay": "^4.2.0",
     "jest-junit": "^6.3.0",
     "jest-stare": "^1.13.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
+    "react-image-crop": "^7.0.2",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "react-webcam": "^1.1.1",
+    "styletron-engine-atomic": "^1.1.1",
+    "styletron-react": "^4.4.6"
   },
   "browserslist": [
     ">0.2%",
