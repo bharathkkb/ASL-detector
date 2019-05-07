@@ -1,0 +1,7 @@
+[build]
+  command = "yarn run build"
+  publish = "frontend/build"
+
+[build.environment]
+  YARN_VERSION = "1.12.3"
+  REACT_APP_DOMAIN = "http://35.231.184.16:5000/"

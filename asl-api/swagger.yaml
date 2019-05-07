@@ -38,6 +38,31 @@ paths:
               $ref: '#/definitions/jobid'
         400:
           description: bad input parameter
+  /crop:
+    post:
+      summary: trys to crop image to find hand
+      operationId: apiHandler.create_crop_img
+      tags:
+        - "crop"
+      description: |
+        Returns cropped image
+      consumes:
+         - multipart/form-data
+      parameters:
+         - name: file_to_upload
+           in: formData
+           description: The image to be uploaded
+           type: file
+           required: true
+      produces:
+      - application/json
+      responses:
+        200:
+          description: cropped image
+          schema:
+            type: object
+        400:
+          description: bad input parameter
   /job:
     post:
       summary: returns current prediction job status

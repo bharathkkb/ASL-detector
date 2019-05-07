@@ -7,7 +7,13 @@
     "prettier/flowtype"
   ],
   "rules": {
-    "import/no-extraneous-dependencies": 0
+    "import/no-extraneous-dependencies": 0,
+    "import/no-unresolved": 0,
+    "import/prefer-default-export": 0,
+    "no-await-in-loop": 0,
+    "no-unused-vars": "warn",
+    "react/destructuring-assignment": 0,
+    "react/sort-comp": 0
   },
   "overrides": [
     {
