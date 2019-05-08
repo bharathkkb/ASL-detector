@@ -22,6 +22,9 @@ spec:
         - name: asl-ui
           image: gcr.io/cs161-prd/asl-ui-prd:latest
           imagePullPolicy: Always
+          env:
+            - name: REACT_APP_DOMAIN
+              value: 'http://35.188.66.14:5000/'
           ports:
             - containerPort: 80
               protocol: TCP
