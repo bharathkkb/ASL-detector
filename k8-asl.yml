@@ -24,7 +24,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: REACT_APP_DOMAIN
-              value: 'http://35.188.66.14:5000/'
+              value: 'http://35.222.107.130:5000/'
           ports:
             - containerPort: 80
               protocol: TCP
