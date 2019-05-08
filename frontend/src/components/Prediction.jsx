@@ -18,7 +18,7 @@ const Prediction = ({ prediction, src }: Props): Node => {
     <Fragment>
       <Card title="Result">
         <StyledBody>
-          {'The prediction in ASL is "{prediction}".'}
+          {`The prediction in ASL is "${prediction}".`}
           <H1 padding="0" margin="0" id="prediction">
             {prediction}
           </H1>
