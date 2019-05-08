@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ASL-Application
+  name: asl-application
 spec:
   replicas: 2
   selector:
     matchLabels:
-      run: ASL-Application
+      run: asl-application
   template:
     metadata:
       labels:
-        run: ASL-Application
+        run: asl-application
     spec:
       containers:
         - name: asl-api
