@@ -30,11 +30,13 @@ type State = {|
   src: ?string,
   showWebcam: boolean,
   showCrop: boolean,
+  uploadSrc: ?string,
 |};
 
 const resetState = Object.freeze({
   disabled: false,
   errorMessage: '',
+  uploadSrc: null,
 });
 
 let prevId: ?string = null;
@@ -72,14 +74,13 @@ export default class ASLDetector2 extends Component<Props, State> {
     const [file: File] = acceptedFiles;
     this.setState({
       errorMessage: '',
-      src: URL.createObjectURL(file),
+      uploadSrc: URL.createObjectURL(file),
       showCrop: true,
     });
   };
 
   sendFile = async (file: Blob) => {
     this.setState({ disabled: true });
-    console.log(file);
     const formData = new FormData();
     formData.append('file_to_upload', new File([file], 'image.jpeg'));
     let id;
@@ -104,7 +105,6 @@ export default class ASLDetector2 extends Component<Props, State> {
     let predictionData;
     while (!found && prevId === id) {
       await wait();
-      console.log('waiting...');
       try {
         data = await getPrediction(idForm);
       } catch (err) {
@@ -123,7 +123,6 @@ export default class ASLDetector2 extends Component<Props, State> {
     }
 
     const result = getAlphabet(predictionData);
-    console.log(result);
 
     this.setState({
       prediction: result,
@@ -153,11 +152,9 @@ export default class ASLDetector2 extends Component<Props, State> {
     this.setState({
       errorMessage: '',
       showWebcam: false,
-      src: imgSrc,
+      uploadSrc: imgSrc,
       showCrop: true,
     });
-    // console.log(imgSrc);
-    // await this.sendFile(dataURLToBlob(imgSrc));
   };
 
   closeCrop = () => {
@@ -203,7 +200,7 @@ export default class ASLDetector2 extends Component<Props, State> {
           isOpen={this.state.showCrop}
           onClose={this.closeCrop}
           onConfirm={this.confirmCrop}
-          src={this.state.src}
+          src={this.state.uploadSrc}
         />
         <WebcamModal
           isOpen={this.state.showWebcam}
