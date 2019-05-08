@@ -24,7 +24,7 @@ describe('image upload', () => {
     await page.click('#crop-confirm');
     await page.waitForSelector('#prediction');
 
-    const prediction = await page.$eval('#prediction h1', e => e.innerHTML);
+    const prediction = await page.$eval('#prediction', e => e.textConent);
     expect(prediction).toMatchSnapshot();
   }, 20000);
 
