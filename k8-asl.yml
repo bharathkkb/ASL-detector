@@ -15,18 +15,22 @@ spec:
       containers:
         - name: asl-api
           image: gcr.io/cs161-prd/asl-api-dev:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
               protocol: TCP
         - name: asl-ui
           image: gcr.io/cs161-prd/asl-ui-prd:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
               protocol: TCP
         - name: asl-worker
           image: gcr.io/cs161-prd/asl-worker:latest
+          imagePullPolicy: Always
         - name: asl-tf-serving
           image: gcr.io/cs161-prd/asl-tf-serving:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8500
               protocol: TCP
