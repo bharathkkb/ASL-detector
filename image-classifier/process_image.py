@@ -4,8 +4,8 @@ from skin_segmentation import extract_skin
 
 
 def equalize_histogram_clahe(img):
-    img_masked = extract_skin(img)
-    img_yuv = cv2.cvtColor(img_masked, cv2.COLOR_BGR2YUV)
+    # img = extract_skin(img) # use skin segmentation technique
+    img_yuv = cv2.cvtColor(img, cv2.COLOR_BGR2YUV)
     planes = cv2.split(img_yuv)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
 
