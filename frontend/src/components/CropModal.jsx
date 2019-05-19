@@ -115,6 +115,13 @@ export default class CropModal extends Component<Props, State> {
     this.props.onConfirm(await dataURLToBlob(croppedImageUrl));
   };
 
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.src !== prevProps.src) {
+      // eslint-disable-next-line
+      this.setState({ crop: { ...defaultCrop } });
+    }
+  }
+
   render() {
     return (
       <Modal isOpen={this.props.isOpen} onClose={this.props.onClose}>
