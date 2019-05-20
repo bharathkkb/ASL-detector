@@ -9,6 +9,7 @@ import gc
 import label_images
 import glob
 
+from process_image import equalize_histogram_clahe
 from keras import layers
 from keras import models
 from keras import optimizers
@@ -23,10 +24,11 @@ print(device_lib.list_local_devices())
 K.tensorflow_backend._get_available_gpus()
 
 
-train_dir = '/asl-data/asl_alphabet_train'
-test_dir = '/asl-data/asl_alphabet_test'
+train_dir = '../asl-data/asl_alphabet_train'
+test_dir = '../asl-data/asl_alphabet_test'
 
 test_images = []
+
 img_h_w = 200
 ntrain = 78301
 nval = 8700

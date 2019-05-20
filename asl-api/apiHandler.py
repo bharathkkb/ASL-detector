@@ -9,7 +9,7 @@ import io
 import base64
 from keras.preprocessing import image
 from celeryTask import predict_image_task
-from mongoHelpers import get_data_from_db,get_json_from_mongo
+from mongoHelpers import MongoHelper
 from autoBB import getHand
 def predict_image_endpoint(file_to_upload):
     image_id=create_pred_doc(file_to_upload)
@@ -21,9 +21,9 @@ def predict_image_endpoint(file_to_upload):
         return False, 500
 
 def get_job(id):
-    result=get_data_from_db(id)
+    result=MongoHelper().get_data_from_db(id)
     if(result):
-        return get_json_from_mongo(result), 200
+        return MongoHelper().get_json_from_mongo(result), 200
     else:
         return False, 500
 
