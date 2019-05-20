@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import glob
+import os
 from skin_segmentation import extract_skin
 
 
