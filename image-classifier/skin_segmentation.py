@@ -8,10 +8,6 @@ def extract_skin(image):
     """
     Using thresholding technique on HSV color space 
     to extract skin pixels form the image
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     input: image
     output: cv2 image
     """
@@ -19,22 +15,6 @@ def extract_skin(image):
     img =  image.copy()
     # Converting from BGR Colours Space to HSV
     img =  cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
-<<<<<<< HEAD
-    
-    # Defining HSV Threadholds
-    lower_threshold = np.array([0, 48, 80], dtype=np.uint8)
-    upper_threshold = np.array([20, 255, 255], dtype=np.uint8)
-    
-    # Single Channel mask,denoting presence of colours in the about threshold
-    skin_mask = cv2.inRange(img,lower_threshold,upper_threshold)
-    
-    # Cleaning up mask using Gaussian Filter
-    skin_mask = cv2.GaussianBlur(skin_mask,(3,3),0)
-    
-    # Extracting skin from the threshold mask
-    skin = cv2.bitwise_and(img,img,mask=skin_mask)
-    
-=======
 
     # Defining HSV Threadholds
     lower_threshold = np.array([0, 12, 20], dtype=np.uint8)
@@ -49,7 +29,6 @@ def extract_skin(image):
     # Extracting skin from the threshold mask
     skin = cv2.bitwise_and(img,img,mask=skin_mask)
 
->>>>>>> master
     # Return the Skin image
     return cv2.cvtColor(skin,cv2.COLOR_HSV2BGR)
 
@@ -83,8 +62,4 @@ def remove_black(estimator_labels, estimator_cluster):
         hasBlack = True
         estimator_cluster = np.delete(estimator_cluster,x[0],0)
         # break
-<<<<<<< HEAD
     return (occurance_counter,estimator_cluster,hasBlack)
-=======
-    return (occurance_counter,estimator_cluster,hasBlack)
->>>>>>> master
